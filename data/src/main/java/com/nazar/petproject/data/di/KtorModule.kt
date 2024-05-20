@@ -2,6 +2,7 @@ package com.nazar.petproject.data.di
 
 import android.util.Log
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
@@ -17,6 +18,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import kotlinx.serialization.json.Json
 import io.ktor.serialization.kotlinx.json.*
+import javax.inject.Singleton
 
 private const val TIME_OUT = 10_000
 
@@ -24,6 +26,8 @@ private const val TIME_OUT = 10_000
 @InstallIn(SingletonComponent::class)
 class KtorModule {
 
+    @Provides
+    @Singleton
     fun provideKtorClient() = HttpClient(Android) {
 
         engine {
@@ -61,4 +65,5 @@ class KtorModule {
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }
     }
+
 }

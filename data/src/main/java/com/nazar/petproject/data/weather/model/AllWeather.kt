@@ -1,17 +1,18 @@
 package com.nazar.petproject.data.weather.model
 
 
+import com.nazar.petproject.domain.weather.model.IAllWeather
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class AllWeather(
     @SerialName("latitude")
-    val latitude: Double,
+    override val latitude: Double,
     @SerialName("longitude")
-    val longitude: Int,
+    override val longitude: Double,
     @SerialName("generationtime_ms")
-    val generationTimeMs: Double,
+    override val generationTimeMs: Double,
     @SerialName("utc_offset_seconds")
     val utcOffsetSeconds: Int,
     @SerialName("timezone")
@@ -19,7 +20,7 @@ data class AllWeather(
     @SerialName("timezone_abbreviation")
     val timezoneAbbreviation: String,
     @SerialName("elevation")
-    val elevation: Int,
+    val elevation: Double,
     @SerialName("current_units")
     val currentUnits: CurrentUnits,
     @SerialName("current")
@@ -32,4 +33,4 @@ data class AllWeather(
     val dailyUnits: DailyUnits,
     @SerialName("daily")
     val daily: Daily
-)
+) : IAllWeather

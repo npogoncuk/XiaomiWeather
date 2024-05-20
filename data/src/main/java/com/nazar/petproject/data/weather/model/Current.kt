@@ -19,13 +19,13 @@ data class Current(
     @SerialName("is_day")
     val isDay: Int,
     @SerialName("precipitation")
-    val precipitation: Int,
+    val precipitation: Double,
     @SerialName("rain")
-    val rain: Int,
+    val rain: Double,
     @SerialName("showers")
-    val showers: Int,
+    val showers: Double,
     @SerialName("snowfall")
-    val snowfall: Int,
+    val snowfall: Double,
     @SerialName("weather_code")
     val weatherCode: Int,
     @SerialName("cloud_cover")
