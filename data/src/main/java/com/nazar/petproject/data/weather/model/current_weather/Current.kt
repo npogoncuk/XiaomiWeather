@@ -1,11 +1,12 @@
-package com.nazar.petproject.data.weather.model
+package com.nazar.petproject.data.weather.model.current_weather
 
 
+import com.nazar.petproject.domain.weather.model.ICurrent
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Current(
+internal data class Current(
     @SerialName("time")
     val time: String,
     @SerialName("interval")
@@ -19,17 +20,19 @@ data class Current(
     @SerialName("is_day")
     val isDay: Int,
     @SerialName("precipitation")
-    val precipitation: Double,
+    override val precipitation: Double,
     @SerialName("rain")
-    val rain: Double,
+    override val rain: Double,
     @SerialName("showers")
-    val showers: Double,
+    override val showers: Double,
     @SerialName("snowfall")
     val snowfall: Double,
     @SerialName("weather_code")
     val weatherCode: Int,
     @SerialName("cloud_cover")
     val cloudCover: Int,
+    @SerialName("pressure_msl")
+    val pressureMsl: Double,
     @SerialName("surface_pressure")
     val surfacePressure: Double,
     @SerialName("wind_speed_10m")
@@ -38,4 +41,4 @@ data class Current(
     val windDirection10m: Int,
     @SerialName("wind_gusts_10m")
     val windGusts10m: Double
-)
+) : ICurrent

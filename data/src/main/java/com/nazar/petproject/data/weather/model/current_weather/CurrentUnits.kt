@@ -1,11 +1,11 @@
-package com.nazar.petproject.data.weather.model
+package com.nazar.petproject.data.weather.model.current_weather
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CurrentUnits(
+internal data class CurrentUnits(
     @SerialName("time")
     val time: String,
     @SerialName("interval")
@@ -30,6 +30,8 @@ data class CurrentUnits(
     val weatherCode: String,
     @SerialName("cloud_cover")
     val cloudCover: String,
+    @SerialName("pressure_msl")
+    val pressureMsl: String,
     @SerialName("surface_pressure")
     val surfacePressure: String,
     @SerialName("wind_speed_10m")

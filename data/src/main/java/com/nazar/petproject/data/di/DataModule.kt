@@ -9,17 +9,17 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DataModule {
-
-    @Binds
-    abstract fun provideWeatherRepository(
-        weatherRepositoryImpl: WeatherRepositoryImpl
-    ): WeatherRepository
-
-    @Binds
-    abstract fun provideWeatherDataSource(
-        weatherDataSource: ApiDataSource
-    ): WeatherDataSource
-}
+//@Module
+//@InstallIn(SingletonComponent::class)
+//abstract class DataModule {
+//
+//    @Binds
+//    abstract fun provideWeatherRepository(
+//        weatherRepositoryImpl: WeatherRepositoryImpl
+//    ): WeatherRepository
+//
+//    @Binds
+//    abstract fun provideWeatherDataSource(
+//        weatherDataSource: ApiDataSource
+//    ): WeatherDataSource
+//}

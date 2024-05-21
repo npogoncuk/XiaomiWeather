@@ -1,8 +1,9 @@
 package com.nazar.petproject.domain.weather
 
-import com.nazar.petproject.domain.weather.model.IAllWeather
+
+import com.nazar.petproject.domain.weather.model.ICurrentWeather
 
 interface WeatherRepository {
 
-    suspend fun getAllWeather(): IAllWeather
+    suspend fun getCurrentWeather(): ICurrentWeather
 }
