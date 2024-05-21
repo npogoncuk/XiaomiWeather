@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.nazar.petproject.domain.weather.WeatherUseCase
 import com.nazar.petproject.xiaomiweather.ui.theme.XiaomiWeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +23,8 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
 
+    @Inject
+    lateinit var weatherUseCase: WeatherUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,6 +37,11 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val currentWeather = weatherUseCase.getCurrentWeather()
+            println(currentWeather)
         }
     }
 }

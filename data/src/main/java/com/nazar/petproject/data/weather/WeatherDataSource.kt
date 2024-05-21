@@ -4,7 +4,7 @@ import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
 import com.nazar.petproject.domain.weather.model.ICurrentWeather
 
 
-internal interface WeatherDataSource {
+interface WeatherDataSource {
 
-    suspend fun getCurrentWeather(): CurrentWeather
+    suspend fun getCurrentWeather(): ICurrentWeather
 }

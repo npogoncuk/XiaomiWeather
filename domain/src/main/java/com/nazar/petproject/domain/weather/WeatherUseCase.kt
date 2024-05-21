@@ -6,7 +6,7 @@ interface WeatherUseCase {
 
     suspend fun getCurrentWeather(): ICurrentWeather
 
-    class Base(private val weatherRepository: WeatherRepository) : WeatherUseCase {
+    class Base (private val weatherRepository: WeatherRepository) : WeatherUseCase {
 
         override suspend fun getCurrentWeather(): ICurrentWeather = weatherRepository.getCurrentWeather()
 
