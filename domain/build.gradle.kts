@@ -11,4 +11,5 @@ java {
 dependencies {
     // reflection
     implementation(kotlin("reflect"))
+    implementation(libs.kotlinx.coroutines.core)
 }

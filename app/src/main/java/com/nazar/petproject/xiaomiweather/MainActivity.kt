@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherValues
 import com.nazar.petproject.xiaomiweather.ui.theme.XiaomiWeatherTheme
@@ -41,12 +42,23 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val currentWeather = weatherUseCase.getCurrentWeather()
-            Log.d("MainActivity", "currentWeather: $currentWeather")
-            Log.d("MainActivity", "rainUnit: ${currentWeather.propertyToUnitMap["rain"]}")
-            Log.d("MainActivity", "rainUnitReflect: ${currentWeather.getUnit(ICurrentWeatherValues::rain)}")
-            println(currentWeather)
+        lifecycleScope.launch {
+            weatherUseCase.getCurrentWeather().collect {
+                Log.d("MainActivity", "getCurrentWeather: $it")
+                when (it) {
+                    is IResult.Success -> {
+                        val weather = it.data
+                        Log.d("MainActivity", "getCurrentWeather: $weather")
+                        val currentWeather = weather
+                        Log.d("MainActivity", "currentWeather: $currentWeather")
+                        Log.d("MainActivity", "rainUnit: ${currentWeather.propertyToUnitMap["rain"]}")
+                        Log.d("MainActivity", "rainUnitReflect: ${currentWeather.getUnit(ICurrentWeatherValues::rain)}")
+
+                    }
+                    else -> {}
+                }
+            }
+
         }
     }
 }
