@@ -15,9 +15,10 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun getCurrentWeather(): Flow<IResult<ICurrentWeather>> = flow {
+        emit(IResult.Error())
         emit(IResult.Loading)
         val we = dataSource.getCurrentWeather()
-        emit(IResult.Success(we))
-        emit(IResult.Error())
+        emit(we)
+
     }.flowOn(dispatcher)
 }

@@ -16,7 +16,9 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.parameter
 import io.ktor.http.URLProtocol
+import io.ktor.http.parameters
 import io.ktor.http.path
 import kotlinx.serialization.json.Json
 import io.ktor.serialization.kotlinx.json.*
