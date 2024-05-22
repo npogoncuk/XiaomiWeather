@@ -1,12 +1,12 @@
 package com.nazar.petproject.domain.weather
 
-import com.nazar.petproject.domain.weather.model.ICurrentWeather
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeather
 
-interface WeatherUseCase {
+interface CurrentWeatherUseCase {
 
     suspend fun getCurrentWeather(): ICurrentWeather
 
-    class Base (private val weatherRepository: WeatherRepository) : WeatherUseCase {
+    class Base (private val weatherRepository: WeatherRepository) : CurrentWeatherUseCase {
 
         override suspend fun getCurrentWeather(): ICurrentWeather = weatherRepository.getCurrentWeather()
 

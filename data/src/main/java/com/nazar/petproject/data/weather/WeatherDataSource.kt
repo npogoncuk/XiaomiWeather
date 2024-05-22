@@ -1,7 +1,6 @@
 package com.nazar.petproject.data.weather
 
-import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
-import com.nazar.petproject.domain.weather.model.ICurrentWeather
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeather
 
 
 interface WeatherDataSource {

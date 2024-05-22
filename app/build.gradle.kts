@@ -76,4 +76,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    // reflection
+    implementation(kotlin("reflect"))
 }

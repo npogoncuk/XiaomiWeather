@@ -1,7 +1,7 @@
 package com.nazar.petproject.xiaomiweather.di
 
 import com.nazar.petproject.domain.weather.WeatherRepository
-import com.nazar.petproject.domain.weather.WeatherUseCase
+import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 class WeatherUseCasesModule {
 
     @Provides
-    fun provideWeatherUseCases(weatherRepository: WeatherRepository): WeatherUseCase = WeatherUseCase.Base(weatherRepository)
+    fun provideWeatherUseCases(weatherRepository: WeatherRepository): CurrentWeatherUseCase = CurrentWeatherUseCase.Base(weatherRepository)
 }

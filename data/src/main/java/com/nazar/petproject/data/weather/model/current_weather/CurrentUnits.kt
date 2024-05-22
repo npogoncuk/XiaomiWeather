@@ -1,6 +1,7 @@
 package com.nazar.petproject.data.weather.model.current_weather
 
 
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherUnits
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,4 +41,4 @@ internal data class CurrentUnits(
     val windDirection10m: String,
     @SerialName("wind_gusts_10m")
     val windGusts10m: String
-)
+) : ICurrentWeatherUnits

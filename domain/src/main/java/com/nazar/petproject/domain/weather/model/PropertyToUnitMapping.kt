@@ -14,6 +14,10 @@ interface PropertyToUnitMapping {
         return propertyToUnitMap[property.name]
     }
 
+    fun getUnit(property: KProperty<*>): String? {
+        return propertyToUnitMap[property.name]
+    }
+
     fun <T : Any> createPropertyToUnitMap(instance: T): Map<MeasuredPropertyName, UnitName> {
         return instance::class.memberProperties
             .mapNotNull { property ->

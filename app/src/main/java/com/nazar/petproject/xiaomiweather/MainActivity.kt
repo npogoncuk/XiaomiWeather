@@ -1,6 +1,7 @@
 package com.nazar.petproject.xiaomiweather
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.nazar.petproject.domain.weather.WeatherUseCase
+import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherValues
 import com.nazar.petproject.xiaomiweather.ui.theme.XiaomiWeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
 
     @Inject
-    lateinit var weatherUseCase: WeatherUseCase
+    lateinit var weatherUseCase: CurrentWeatherUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,6 +43,9 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             val currentWeather = weatherUseCase.getCurrentWeather()
+            Log.d("MainActivity", "currentWeather: $currentWeather")
+            Log.d("MainActivity", "rainUnit: ${currentWeather.propertyToUnitMap["rain"]}")
+            Log.d("MainActivity", "rainUnitReflect: ${currentWeather.getUnit(ICurrentWeatherValues::rain)}")
             println(currentWeather)
         }
     }

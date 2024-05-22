@@ -2,7 +2,6 @@ package com.nazar.petproject.data.weather.data_sources
 
 import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
-import com.nazar.petproject.domain.weather.model.ICurrentWeather
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -15,6 +14,7 @@ internal class ApiDataSource @Inject constructor(private val httpClient: HttpCli
 
     override suspend fun getCurrentWeather(): CurrentWeather {
         val response: HttpResponse = httpClient.get("$BASE_URL$query")
+
         return response.body()!!
     }
 

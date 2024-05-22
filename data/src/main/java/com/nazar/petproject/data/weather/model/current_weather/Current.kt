@@ -1,7 +1,7 @@
 package com.nazar.petproject.data.weather.model.current_weather
 
 
-import com.nazar.petproject.domain.weather.model.ICurrent
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherValues
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,13 +12,13 @@ internal data class Current(
     @SerialName("interval")
     val interval: Int,
     @SerialName("temperature_2m")
-    val temperature2m: Double,
+    override val temperature2m: Double,
     @SerialName("relative_humidity_2m")
-    val relativeHumidity2m: Int,
+    override val relativeHumidity2m: Int,
     @SerialName("apparent_temperature")
-    val apparentTemperature: Double,
+    override val apparentTemperature: Double,
     @SerialName("is_day")
-    val isDay: Int,
+    val isDayInt: Int,
     @SerialName("precipitation")
     override val precipitation: Double,
     @SerialName("rain")
@@ -26,19 +26,22 @@ internal data class Current(
     @SerialName("showers")
     override val showers: Double,
     @SerialName("snowfall")
-    val snowfall: Double,
+    override val snowfall: Double,
     @SerialName("weather_code")
-    val weatherCode: Int,
+    override val weatherCode: Int,
     @SerialName("cloud_cover")
-    val cloudCover: Int,
+    override val cloudCover: Int,
     @SerialName("pressure_msl")
-    val pressureMsl: Double,
+    override val pressureMsl: Double,
     @SerialName("surface_pressure")
-    val surfacePressure: Double,
+    override val surfacePressure: Double,
     @SerialName("wind_speed_10m")
-    val windSpeed10m: Double,
+    override val windSpeed10m: Double,
     @SerialName("wind_direction_10m")
-    val windDirection10m: Int,
+    override val windDirection10m: Int,
     @SerialName("wind_gusts_10m")
-    val windGusts10m: Double
-) : ICurrent
+    override val windGusts10m: Double
+) : ICurrentWeatherValues {
+    override val isDay: Boolean
+        get() = this@Current.isDayInt == 1
+}

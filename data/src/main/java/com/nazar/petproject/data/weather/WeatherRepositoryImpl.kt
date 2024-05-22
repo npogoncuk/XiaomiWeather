@@ -1,7 +1,7 @@
 package com.nazar.petproject.data.weather
 
 import com.nazar.petproject.domain.weather.WeatherRepository
-import com.nazar.petproject.domain.weather.model.ICurrentWeather
+import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeather
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
