@@ -25,7 +25,7 @@ import javax.inject.Singleton
 private const val TIME_OUT = 10_000
 
 private const val API_OPEN_METEO_HOST = "api.open-meteo.com"
-private const val API_OPEN_METEO_PATH = "v1/"
+private const val API_OPEN_METEO_PATH = "v1/forecast"
 @Module
 @InstallIn(SingletonComponent::class)
 class HttpClientsModule {

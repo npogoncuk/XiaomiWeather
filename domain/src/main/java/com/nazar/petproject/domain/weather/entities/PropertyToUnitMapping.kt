@@ -1,6 +1,5 @@
-package com.nazar.petproject.domain.weather.model
+package com.nazar.petproject.domain.weather.entities
 
-import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.memberProperties
 

@@ -1,7 +1,7 @@
 package com.nazar.petproject.data.weather.model.current_weather
 
 
-import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherValues
+import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherValues
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

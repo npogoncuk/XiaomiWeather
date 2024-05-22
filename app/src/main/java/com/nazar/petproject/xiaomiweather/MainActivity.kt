@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
-import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherValues
+import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherValues
 import com.nazar.petproject.xiaomiweather.ui.theme.XiaomiWeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

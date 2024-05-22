@@ -1,4 +1,4 @@
-package com.nazar.petproject.domain.weather.model.general
+package com.nazar.petproject.domain.weather.entities.general
 
 interface GeographicalTimeInfoWeather {
     val latitude: Double

@@ -1,13 +1,13 @@
 package com.nazar.petproject.data.weather.model.current_weather
 
 
-import com.nazar.petproject.domain.weather.model.general.GeographicalTimeInfoWeather
-import com.nazar.petproject.domain.weather.model.MeasuredPropertyName
-import com.nazar.petproject.domain.weather.model.PropertyToUnitMapping
-import com.nazar.petproject.domain.weather.model.UnitName
-import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeather
-import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherUnits
-import com.nazar.petproject.domain.weather.model.current_weather.ICurrentWeatherValues
+import com.nazar.petproject.domain.weather.entities.general.GeographicalTimeInfoWeather
+import com.nazar.petproject.domain.weather.entities.MeasuredPropertyName
+import com.nazar.petproject.domain.weather.entities.PropertyToUnitMapping
+import com.nazar.petproject.domain.weather.entities.UnitName
+import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
+import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherUnits
+import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherValues
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

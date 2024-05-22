@@ -1,6 +1,6 @@
-package com.nazar.petproject.domain.weather.model.current_weather
+package com.nazar.petproject.domain.weather.entities.current_weather
 
-import com.nazar.petproject.domain.weather.model.general.WeatherValues
+import com.nazar.petproject.domain.weather.entities.general.WeatherValues
 
 interface ICurrentWeatherValues : WeatherValues {
     //val time: String
