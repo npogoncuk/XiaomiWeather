@@ -4,6 +4,9 @@ plugins {
 
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+
+    alias(libs.plugins.kotlinx.serialization)
+
 }
 
 android {
@@ -66,6 +69,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,4 +83,6 @@ dependencies {
 
     // reflection
     implementation(kotlin("reflect"))
+
+    implementation(libs.kotlinx.serialization.json)
 }
