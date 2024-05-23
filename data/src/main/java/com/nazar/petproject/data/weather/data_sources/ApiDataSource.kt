@@ -4,31 +4,41 @@ import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.exceptions.ApiCallException
+import com.nazar.petproject.domain.exceptions.DeveloperMistakeException
+import com.nazar.petproject.domain.exceptions.NoInternetException
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.messageOrNull
+import com.skydoves.sandwich.onError
+import com.skydoves.sandwich.onException
+import com.skydoves.sandwich.onSuccess
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.isSuccess
+import io.ktor.utils.io.errors.IOException
+import kotlinx.serialization.SerializationException
 import javax.inject.Inject
 
-private const val  CURRENT_WEATHER_PARAMETERS = "temperature_m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
+private const val  CURRENT_WEATHER_PARAMETERS = "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
+
 internal class ApiDataSource @Inject constructor(private val httpClient: HttpClient) : WeatherDataSource {
 
     override suspend fun getCurrentWeather(): IResult<CurrentWeather> {
+/*
         val response: HttpResponse = httpClient.get {
             addLatitudeLongitude()
             addComaSeparatedWeatherParameters("current", CURRENT_WEATHER_PARAMETERS)
             parameter("timezone", "Europe/London")
-        }
+        }*/
 
-        return if (response.status.isSuccess()) {
-            IResult.Success(response.body())
-        } else {
-            IResult.Error(exception = ApiCallException(response.bodyAsText()))
+        val response = httpClient.getApiResponse<CurrentWeather> {
+            addLatitudeLongitude()
+            addComaSeparatedWeatherParameters("current", CURRENT_WEATHER_PARAMETERS)
+            parameter("timezone", "Europe/London")
         }
+        return response.handleSuccessErrorException()
     }
 
 }
@@ -43,4 +53,24 @@ private fun HttpRequestBuilder.addComaSeparatedWeatherParameters(key: String, pa
         parameter(key, parameter)
 
     }
+}
+
+private fun<T> ApiResponse<T>.handleSuccessErrorException(): IResult<T> {
+    var result: IResult<T>? = null
+    this.onSuccess {
+        result = IResult.Success(data)
+    }.onError {
+        result = IResult.Error(exception = DeveloperMistakeException(), message = this.messageOrNull)
+    }.onException {
+        result = IResult.Error(exception = throwable.requestThrowableToDomainException())
+    }
+    return result!!
+}
+
+private fun Throwable.requestThrowableToDomainException() = when(this) {
+    is ClientRequestException, is ServerResponseException, is SerializationException -> {
+        DeveloperMistakeException()
+    }
+    is IOException -> NoInternetException()
+    else -> ApiCallException(this.message ?: "Unknown error")
 }

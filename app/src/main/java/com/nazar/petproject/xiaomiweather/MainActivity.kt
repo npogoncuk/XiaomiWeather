@@ -19,6 +19,7 @@ import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeat
 import com.nazar.petproject.xiaomiweather.ui.theme.XiaomiWeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
+            delay(5000)
             weatherUseCase.getCurrentWeather().collect {
                 Log.d("MainActivity", "getCurrentWeather: $it")
                 when (it) {
