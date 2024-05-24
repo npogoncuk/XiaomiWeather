@@ -25,14 +25,15 @@ fun CompositeWeatherScreen(
     modifier: Modifier,
 ) {
     Scaffold(
-        topBar = { CompositeWeatherTopAppBar(modifier = Modifier.height(Dimensions.TopAppBarHeight)) }
-    ) {
+        topBar = { CompositeWeatherTopAppBar() }
+    ) { paddingValues ->
+
         val scrollState = rememberLazyListState()
 
         LazyColumn(
             state = scrollState,
             modifier = Modifier.fillMaxWidth()
-                .padding(top = 56.dp)
+                .padding(top = paddingValues.calculateTopPadding())
         ) {
             item {
                 Text(
