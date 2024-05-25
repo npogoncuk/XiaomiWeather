@@ -47,15 +47,14 @@ internal data class CurrentWeather(
     override val propertyToUnitMap: Map<MeasuredPropertyName, UnitName>
         get() = _propertyToUnitMap
 
-    override val geographicalTimeInfoWeather: GeographicalTimeInfoWeather
-        get() = GeographicalTimeInfoWeather.createInstance(
-            latitude = latitude,
-            longitude = longitude,
-            utcOffsetSeconds = utcOffsetSeconds,
-            timezone = timezone,
-            timezoneAbbreviation = timezoneAbbreviation,
-            elevation = elevation
-        )
+    override val geographicalTimeInfoWeather = GeographicalTimeInfoWeather.createInstance(
+        latitude = latitude,
+        longitude = longitude,
+        utcOffsetSeconds = utcOffsetSeconds,
+        timezone = timezone,
+        timezoneAbbreviation = timezoneAbbreviation,
+        elevation = elevation
+    )
 
     override val units: ICurrentWeatherUnits
         get() = currentUnits

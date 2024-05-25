@@ -9,6 +9,7 @@ import com.nazar.petproject.domain.onSuccess
 import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
+import com.nazar.petproject.domain.weather.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompositeWeatherViewModel @Inject constructor(
-    private val currentWeatherUseCase: CurrentWeatherUseCase
+    private val currentWeatherUseCase: CurrentWeatherUseCase,
+    private val dailyWeatherUseCase: DailyWeatherUseCase,
 ) : ViewModel() {
 
     private val oneTimeEventChannel = Channel<OneTimeUIEvent>()
@@ -34,15 +36,28 @@ class CompositeWeatherViewModel @Inject constructor(
 
     init {
         getCurrentWeather()
+        getDailyWeather()
     }
 
     private fun getCurrentWeather() {
         viewModelScope.launch {
             currentWeatherUseCase().collect { result ->
                 result.suspendOnError {
-                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast("Error"))
+                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast( message ?: "Error"))
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
+                }
+            }
+        }
+    }
+
+    private fun getDailyWeather() {
+        viewModelScope.launch {
+            dailyWeatherUseCase().collect { result ->
+                result.suspendOnError {
+                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(message ?: "Error"))
+                }.suspendOnSuccess {
+                    _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
                 }
             }
         }

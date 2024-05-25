@@ -3,6 +3,7 @@ package com.nazar.petproject.data.weather
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
+import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,7 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun getCurrentWeather(): Flow<IResult<ICurrentWeather>> = flow {
-        emit(IResult.Error())
+        emit(IResult.Error(message = "Current Weather Error"))
         emit(IResult.Loading)
         delay(3000)
         val we = dataSource.getCurrentWeather()
@@ -24,5 +25,11 @@ class WeatherRepositoryImpl @Inject constructor(
 
         delay(5000)
         emit(IResult.Error())
+    }.flowOn(dispatcher)
+
+    override suspend fun getDailyWeather(): Flow<IResult<IDailyWeather>> = flow {
+        val dailyWeather = dataSource.getDailyWeather()
+        emit(dailyWeather)
+        emit(IResult.Error(message = "Daily Weather Error"))
     }.flowOn(dispatcher)
 }

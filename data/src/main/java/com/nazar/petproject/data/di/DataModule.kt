@@ -2,7 +2,7 @@ package com.nazar.petproject.data.di
 
 import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.WeatherRepositoryImpl
-import com.nazar.petproject.data.weather.data_sources.ApiDataSource
+import com.nazar.petproject.data.weather.data_sources.WeatherApiDataSource
 import com.nazar.petproject.domain.weather.WeatherRepository
 import dagger.Binds
 import dagger.Module
@@ -23,6 +23,6 @@ abstract class DataModule {
     @Binds
     @Singleton
     internal abstract fun provideWeatherDataSource(
-        weatherDataSource: ApiDataSource
+        weatherDataSource: WeatherApiDataSource
     ): WeatherDataSource
 }
