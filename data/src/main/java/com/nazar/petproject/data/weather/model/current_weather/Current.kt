@@ -12,11 +12,11 @@ internal data class Current(
     @SerialName("interval")
     val interval: Int,
     @SerialName("temperature_2m")
-    override val temperature2m: Double,
+    private val temperature2m: Double,
     @SerialName("relative_humidity_2m")
     override val relativeHumidity2m: Int,
     @SerialName("apparent_temperature")
-    override val apparentTemperature: Double,
+    private val apparentTemperatureDouble: Double,
     @SerialName("is_day")
     val isDayInt: Int,
     @SerialName("precipitation")
@@ -44,4 +44,10 @@ internal data class Current(
 ) : ICurrentWeatherValues {
     override val isDay: Boolean
         get() = this@Current.isDayInt == 1
+
+    override val temperature: Int
+        get() = temperature2m.toInt()
+
+    override val apparentTemperature: Int
+        get() = apparentTemperatureDouble.toInt()
 }

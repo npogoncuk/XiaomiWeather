@@ -5,9 +5,9 @@ import com.nazar.petproject.domain.weather.entities.general.WeatherValues
 interface ICurrentWeatherValues : WeatherValues {
     //val time: String
     //val interval: Int
-    val temperature2m: Double
+    val temperature: Int
     val relativeHumidity2m: Int
-    val apparentTemperature: Double
+    val apparentTemperature: Int
     val isDay: Boolean
     val precipitation: Double
     val rain: Double

@@ -38,6 +38,7 @@ class HttpClientsModule {
 
         defaultRequest {
             header(HttpHeaders.ContentType, ContentType.Application.Json)
+            header(HttpHeaders.Accept, ContentType.Application.Json)
 
             url {
                 protocol = URLProtocol.HTTPS
