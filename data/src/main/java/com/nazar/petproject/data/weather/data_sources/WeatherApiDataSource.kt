@@ -40,18 +40,11 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     }
 
     override suspend fun getDailyWeather(): IResult<IDailyWeather> {
-        val rr = httpClient.get {
-            addLatitudeLongitude()
-            addComaSeparatedWeatherParameters("daily", DAILY_WEATHER_PARAMETERS)
-            addKievTimeZone()
-        }
-        println(rr.bodyAsText())
         val response = httpClient.getApiResponse<DailyWeather> {
             addLatitudeLongitude()
             addComaSeparatedWeatherParameters("daily", DAILY_WEATHER_PARAMETERS)
             addKievTimeZone()
         }
-
         return response.handleSuccessErrorException()
     }
 }

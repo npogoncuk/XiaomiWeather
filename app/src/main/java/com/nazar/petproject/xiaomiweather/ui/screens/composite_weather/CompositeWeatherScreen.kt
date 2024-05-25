@@ -13,12 +13,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nazar.petproject.xiaomiweather.ui.Dimensions.DEFAULT_SMALL_PADDING
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
+import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
+import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CurrentTemperatureBlock
+import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.FiveDayForecastBlock
 
 
 @Composable
@@ -55,10 +59,13 @@ fun CompositeWeatherScreen(
                 aqi = "AQI 25")
             }
             item {
-                Text(
-                    text = "Daily Weather dates: ${state.dailyWeather?.values?.oneDayWeatherList.toString()}",
-                    modifier = Modifier.padding(DEFAULT_SMALL_PADDING).fillMaxWidth().height(200.dp)
-                )
+                val dailyForecast = state.dailyWeather
+                if (dailyForecast != null) {
+                     FiveDayForecastBlock(
+                         dailyWeatherList = dailyForecast.values.oneDayWeatherList,
+                         modifier = Modifier.padding(DEFAULT_SMALL_PADDING)
+                     )
+                }
             }
         }
     }

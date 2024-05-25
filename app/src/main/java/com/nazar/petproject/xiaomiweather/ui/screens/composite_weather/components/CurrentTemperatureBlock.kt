@@ -1,4 +1,4 @@
-package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather
+package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
