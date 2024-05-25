@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +30,8 @@ fun CompositeWeatherScreen(
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    val state by viewModel.weatherState.collectAsState()
     Scaffold(
         topBar = { CompositeWeatherTopAppBar() }
     ) { paddingValues ->
@@ -36,12 +40,13 @@ fun CompositeWeatherScreen(
 
         LazyColumn(
             state = scrollState,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = paddingValues.calculateTopPadding())
         ) {
             item { CurrentTemperatureBlock(
                 modifier = Modifier.padding(DEFAULT_SMALL_PADDING),
-                currentTemperature = 25,
+                currentTemperature = state.currentWeather?.values?.temperature ?: -25,
                 temperatureUnit = "°C",
                 highLow = "High 25°C / Low 25°C",
                 aqi = "AQI 25")
