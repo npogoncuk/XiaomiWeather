@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             delay(5000)
-            weatherUseCase.getCurrentWeather().collect {
+            weatherUseCase.invoke().collect {
                 Log.d("MainActivity", "getCurrentWeather: $it")
                 when (it) {
                     is IResult.Success -> {
@@ -63,9 +63,8 @@ class MainActivity : ComponentActivity() {
 fun WeatherApp() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Destination.CompositeWeather) {
-        val modifier = Modifier.fillMaxSize()
         composable<Destination.CompositeWeather> {
-            CompositeWeatherScreen(navController = navController, modifier = modifier)
+            CompositeWeatherScreen(navController = navController)
         }
         composable<Destination.Settings> {
 

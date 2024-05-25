@@ -4,6 +4,7 @@ import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -20,5 +21,7 @@ class WeatherRepositoryImpl @Inject constructor(
         val we = dataSource.getCurrentWeather()
         emit(we)
 
+        delay(5000)
+        emit(IResult.Error())
     }.flowOn(dispatcher)
 }

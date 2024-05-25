@@ -6,11 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrentWeatherUseCase {
 
-    suspend fun getCurrentWeather(): Flow<IResult<ICurrentWeather>>
+    suspend operator fun invoke(): Flow<IResult<ICurrentWeather>>
 
     class Base (private val weatherRepository: WeatherRepository) : CurrentWeatherUseCase {
 
-        override suspend fun getCurrentWeather(): Flow<IResult<ICurrentWeather>> = weatherRepository.getCurrentWeather()
+        override suspend operator fun invoke(): Flow<IResult<ICurrentWeather>> = weatherRepository.getCurrentWeather().also {
+            println("CurrentWeatherUseCase called")
+        }
 
     }
 }
