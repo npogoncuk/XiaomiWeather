@@ -23,9 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nazar.petproject.domain.weather.entities.daily_weather.IOneDayWeather
+import com.nazar.petproject.xiaomiweather.R
 import com.nazar.petproject.xiaomiweather.ui.Dimensions
 
 @Composable
@@ -35,7 +37,7 @@ fun FiveDayForecastBlock(
 ) {
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = Color(0xFF263238),
+        color = Color(0xA1263238),
         modifier = Modifier
             .fillMaxWidth()
             .padding(Dimensions.DEFAULT_SMALL_PADDING)
@@ -46,12 +48,12 @@ fun FiveDayForecastBlock(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "5-day forecast",
+                    text = stringResource(id = R.string.five_day_forecast),
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
-                    text = "More details",
+                    text = stringResource(id = R.string.more_details),
                     color = Color.Blue
                 )
             }
@@ -65,7 +67,7 @@ fun FiveDayForecastBlock(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(contentColor = Color(0xFF263238))
             ) {
-                Text(text = "5-day forecast", color = Color.White)
+                Text(text = stringResource(id = R.string.five_day_forecast), color = Color.White)
             }
         }
     }

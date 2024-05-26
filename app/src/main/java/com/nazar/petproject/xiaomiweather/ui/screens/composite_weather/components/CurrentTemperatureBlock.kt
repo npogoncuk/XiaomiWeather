@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nazar.petproject.xiaomiweather.R
 
 @Composable
 fun CurrentTemperatureBlock(
@@ -55,7 +57,7 @@ fun CurrentTemperatureBlock(
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Text(
-                text = aqi,
+                text = "${stringResource(id = R.string.aqi)} $aqi",
                 modifier = Modifier.padding(8.dp),
             )
         }

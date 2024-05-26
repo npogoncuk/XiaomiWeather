@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">XiaomiWeather</string>
+    <string name="aqi">AQI</string>
+    <string name="five_day_forecast">5-day forecast</string>
+    <string name="more_details">More details</string>
+    <string name="humidity">Humidity</string>
+    <string name="real_feel">Real feel</string>
+    <string name="pressure">Pressure</string>
+    <string name="chance_of_rain">Chance of rain</string>
 </resources>
