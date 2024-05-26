@@ -28,6 +28,7 @@ import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CurrentTemperatureBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.FiveDayForecastBlock
+import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.SunriseSunsetInfoBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.WeatherDetailsBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.WindInfoBlock
 
@@ -93,6 +94,13 @@ fun CompositeWeatherScreen(
                             .weight(1f)
                             .padding(Dimensions.DEFAULT_SMALL_PADDING)
                     )
+                    SunriseSunsetInfoBlock(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(Dimensions.DEFAULT_SMALL_PADDING)
+                    )
+                    /*
                     WindInfoBlock(
                         windSpeed = currentWeather.values.windSpeed10m.toInt(),
                         windSpeedUnit = currentWeather.getUnit(ICurrentWeatherValues::windSpeed10m).toString(),
@@ -100,7 +108,7 @@ fun CompositeWeatherScreen(
                         modifier = Modifier
                             .weight(1f)
                             .padding(Dimensions.DEFAULT_SMALL_PADDING)
-                    )
+                    )*/
                 }
                 WeatherDetailsBlock(
                     currentWeather = currentWeather,
@@ -111,6 +119,10 @@ fun CompositeWeatherScreen(
                 )
             }
 
+
+            SunriseSunsetInfoBlock(
+                Modifier.fillMaxWidth().padding(Dimensions.DEFAULT_SMALL_PADDING)
+            )
         }
     }
 }
