@@ -23,6 +23,7 @@ fun SettingMediumTopAppBar(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     MediumTopAppBar(
+        modifier = modifier,
         title = {
             Text(
                 stringResource(id = R.string.settings),

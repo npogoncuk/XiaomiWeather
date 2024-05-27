@@ -2,6 +2,7 @@ package com.nazar.petproject.xiaomiweather.ui.screens.settings.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,14 +32,36 @@ fun SettingsItem(
             .background(backgroundColor)
             .clickable(onClick = onClick)
             .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(
+            modifier = Modifier.weight(1f),
+            text = title,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 2
+        )
+
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.End,
+        ) {
             if (subtitle != null) {
-                Text(text = subtitle, fontSize = 14.sp, color = Color.Gray)
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = subtitle,
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    maxLines = 2
+                )
             }
+            Icon(modifier = Modifier.weight(1f),
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = "Forward",
+                tint = Color.Gray
+            )
         }
-        Icon(Icons.Default.ArrowForward, contentDescription = "Forward", tint = Color.Gray)
+
     }
 }
