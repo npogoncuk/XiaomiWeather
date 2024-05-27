@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.CompositeWeatherScreen
+import com.nazar.petproject.xiaomiweather.ui.screens.settings.SettingsScreen
 
 @Composable
 fun XiaomiWeatherApp() {
@@ -14,7 +15,7 @@ fun XiaomiWeatherApp() {
             CompositeWeatherScreen(navController = navController)
         }
         composable<Destination.Settings> {
-
+            SettingsScreen(navController = navController)
         }
     }
 }

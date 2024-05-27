@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeatherValues
+import com.nazar.petproject.xiaomiweather.ui.Destination
 import com.nazar.petproject.xiaomiweather.ui.Dimensions
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
@@ -48,7 +49,13 @@ fun CompositeWeatherScreen(
 
     val state by viewModel.weatherState.collectAsState()
     Scaffold(
-        topBar = { CompositeWeatherTopAppBar() }
+        topBar = {
+            CompositeWeatherTopAppBar(
+                onPlusClick = { TODO() },
+                onShareClick = { TODO() },
+                onSettingsClick = { navController.navigate(Destination.Settings) }
+            )
+        }
     ) { paddingValues ->
         val scrollState = rememberScrollState()
         val dailyWeather = state.dailyWeather
