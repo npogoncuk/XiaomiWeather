@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.sandwich.ktor)
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.datastore.preferences)
     ksp(libs.hilt.compiler)
     // reflection
     implementation(kotlin("reflect"))

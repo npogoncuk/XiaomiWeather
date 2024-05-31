@@ -1,5 +1,9 @@
 package com.nazar.petproject.xiaomiweather.di
 
+import com.nazar.petproject.data.settings.AvailableUnitsSettingsRepositoryImpl
+import com.nazar.petproject.data.weather.WeatherRepositoryImpl
+import com.nazar.petproject.domain.settings.repositories.AvailableUnitsSettingsRepository
+import com.nazar.petproject.domain.settings.usecases.GetTemperatureUnitsUseCase
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
 import com.nazar.petproject.domain.weather.DailyWeatherUseCase
@@ -16,4 +20,8 @@ class UseCasesModule {
     fun provideCurrentWeatherUseCases(weatherRepository: WeatherRepository): CurrentWeatherUseCase = CurrentWeatherUseCase.Base(weatherRepository)
     @Provides
     fun provideDailyUseCases(weatherRepository: WeatherRepository): DailyWeatherUseCase = DailyWeatherUseCase.Base(weatherRepository)
+
+    @Provides
+    fun provideGetTemperatureUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetTemperatureUnitsUseCase
+            = GetTemperatureUnitsUseCase.Base(availableUnitsSettingsRepository)
 }
