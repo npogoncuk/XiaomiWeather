@@ -9,7 +9,7 @@ import com.nazar.petproject.xiaomiweather.R
 val MeasurementUnit.subtitle: Int
     get() = when (this.unitFor) {
         is UnitFor.Temperature.Celsius -> R.string.celsius
-        is UnitFor.Temperature.Fahrenheit -> R.string.farenheit
+        is UnitFor.Temperature.Fahrenheit -> R.string.fahrenheit
 
         is UnitFor.WindSpeed.MetersPerSecond -> R.string.meters_per_second
         is UnitFor.WindSpeed.KilometersPerHour -> R.string.kilometers_per_hour

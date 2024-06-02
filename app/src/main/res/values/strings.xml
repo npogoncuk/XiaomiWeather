@@ -8,10 +8,10 @@
     <string name="pressure">Pressure</string>
     <string name="chance_of_rain">Chance of rain</string>
     <string name="settings">Settings</string>
-    <string name="temprerature_units">Temperature units</string>
+    <string name="temperature_units">Temperature units</string>
     <string name="wind_speed_units">Wind speed units</string>
     <string name="celsius">°C</string>
-    <string name="farenheit">°F</string>
+    <string name="fahrenheit">°F</string>
     <string name="meters_per_second">Meters per second (m/s)</string>
     <string name="kilometers_per_hour">Kilometers per hour (km/h)</string>
     <string name="miles_per_hour">Miles per hour (mph)</string>

@@ -34,7 +34,7 @@ fun SettingsContent(
         Spacer(modifier = Modifier.height(16.dp))
         SettingsSection(title = "UNITS") {
             SettingsItemWithDropdown(
-                title = stringResource(id = R.string.temprerature_units),
+                title = stringResource(id = R.string.temperature_units),
                 subtitle = stringResource(id = settingState.currentTemperatureUnit.subtitle),
                 options = settingState.temperatureUnits,
                 selectedOption = settingState.currentTemperatureUnit,
