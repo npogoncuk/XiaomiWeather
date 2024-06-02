@@ -7,18 +7,13 @@ import com.nazar.petproject.domain.settings.entities.units.UnitFor
 object TemperatureUnits : MeasureUnitList {
 
     object Celsius : MeasurementUnit {
-        override val displayName: String = "°C"
-        override val unitFor: UnitFor = UnitFor.Temperature
+        override val unitFor: UnitFor = UnitFor.Temperature.Celsius
     }
 
     object Fahrenheit : MeasurementUnit {
-        override val displayName: String = "°F"
-        override val unitFor: UnitFor = UnitFor.Temperature
+        override val unitFor: UnitFor = UnitFor.Temperature.Fahrenheit
     }
 
     override val units: List<MeasurementUnit>
         get() = listOf(Celsius, Fahrenheit)
-
-    override val default: MeasurementUnit
-        get() = Celsius
 }

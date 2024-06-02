@@ -1,6 +1,16 @@
 package com.nazar.petproject.domain.settings.entities.units
 
 sealed interface UnitFor {
-    data object Temperature : UnitFor
-    data object WindSpeed : UnitFor
+    interface Temperature : UnitFor {
+        data object Celsius : Temperature
+
+        data object Fahrenheit : Temperature
+
+    }
+    sealed interface WindSpeed : UnitFor {
+        data object MetersPerSecond : WindSpeed
+        data object KilometersPerHour : WindSpeed
+        data object MilesPerHour : WindSpeed
+        data object Knots : WindSpeed
+    }
 }

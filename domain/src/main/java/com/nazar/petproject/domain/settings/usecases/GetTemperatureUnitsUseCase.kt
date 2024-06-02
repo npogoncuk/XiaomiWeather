@@ -13,7 +13,7 @@ interface GetTemperatureUnitsUseCase {
     ) : GetTemperatureUnitsUseCase {
 
         override fun invoke(): List<MeasurementUnit> {
-            return availableUnitsSettingsRepository.getAvailableUnits(UnitFor.Temperature)
+            return availableUnitsSettingsRepository.getAvailableUnits(object : UnitFor.Temperature {})
         }
     }
 }
