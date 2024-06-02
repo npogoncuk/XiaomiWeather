@@ -12,8 +12,9 @@ val MeasurementUnit.subtitle: Int
         is UnitFor.Temperature.Fahrenheit -> R.string.farenheit
 
         is UnitFor.WindSpeed.MetersPerSecond -> R.string.meters_per_second
-        else -> {
-            // TODO: Add missing units
-            R.string.aqi
-        }
+        is UnitFor.WindSpeed.KilometersPerHour -> R.string.kilometers_per_hour
+        is UnitFor.WindSpeed.MilesPerHour -> R.string.miles_per_hour
+        is UnitFor.WindSpeed.Knots -> R.string.knots
+
+        else -> throw IllegalArgumentException("Unknown unit type")
     }

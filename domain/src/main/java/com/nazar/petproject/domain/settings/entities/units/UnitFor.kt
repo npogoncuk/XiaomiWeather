@@ -7,7 +7,7 @@ sealed interface UnitFor {
         data object Fahrenheit : Temperature
 
     }
-    sealed interface WindSpeed : UnitFor {
+    interface WindSpeed : UnitFor {
         data object MetersPerSecond : WindSpeed
         data object KilometersPerHour : WindSpeed
         data object MilesPerHour : WindSpeed

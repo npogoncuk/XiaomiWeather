@@ -51,8 +51,10 @@ fun CompositeWeatherScreen(
     Scaffold(
         topBar = {
             CompositeWeatherTopAppBar(
-                onPlusClick = { TODO() },
-                onShareClick = { TODO() },
+                onPlusClick = {
+                     // TODO(): implement adding new location
+                },
+                onShareClick = { /*TODO(): implement sharing weather screen  */ },
                 onSettingsClick = { navController.navigate(Destination.Settings) }
             )
         }

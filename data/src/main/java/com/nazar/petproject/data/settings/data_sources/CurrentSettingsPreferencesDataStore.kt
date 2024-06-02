@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.nazar.petproject.data.settings.units_list_storage.TemperatureUnits
+import com.nazar.petproject.data.settings.units_list_storage.WindUnits
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,21 @@ class CurrentSettingsPreferencesDataStore @Inject constructor(
     suspend fun saveTemperature(unit: MeasurementUnit) {
         context.dataStore.edit { settings ->
             settings[temperatureUnit] = unit.toString()
+        }
+    }
+
+    private val windSpeedUnit = stringPreferencesKey("wind_speed_unit")
+    val windSpeedUnitFlow: Flow<MeasurementUnit> = context.dataStore.data
+        .map { preferences ->
+            val windSpeedStr = preferences[windSpeedUnit]
+            val unitsList = WindUnits.units
+            val measurementUnit = unitsList.find { it.toString() == windSpeedStr } ?: unitsList.first()
+            measurementUnit
+        }
+
+    suspend fun saveWindSpeed(unit: MeasurementUnit) {
+        context.dataStore.edit { settings ->
+            settings[windSpeedUnit] = unit.toString()
         }
     }
 }

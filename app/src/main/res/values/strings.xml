@@ -13,4 +13,7 @@
     <string name="celsius">°C</string>
     <string name="farenheit">°F</string>
     <string name="meters_per_second">Meters per second (m/s)</string>
+    <string name="kilometers_per_hour">Kilometers per hour (km/h)</string>
+    <string name="miles_per_hour">Miles per hour (mph)</string>
+    <string name="knots">Knot</string>
 </resources>

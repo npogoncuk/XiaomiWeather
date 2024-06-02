@@ -6,23 +6,23 @@ import com.nazar.petproject.domain.settings.entities.units.UnitFor
 
 object WindUnits : MeasureUnitList {
 
-    object MetersPerSecond : MeasurementUnit {
+    data object MetersPerSecond : MeasurementUnit {
         override val unitFor: UnitFor = UnitFor.WindSpeed.MetersPerSecond
     }
 
-    object KilometersPerHour : MeasurementUnit {
+    data object KilometersPerHour : MeasurementUnit {
         override val unitFor: UnitFor = UnitFor.WindSpeed.KilometersPerHour
     }
 
-    object MilesPerHour : MeasurementUnit {
+    data object MilesPerHour : MeasurementUnit {
         override val unitFor: UnitFor = UnitFor.WindSpeed.MilesPerHour
     }
 
-    object Knots : MeasurementUnit {
+    data object Knots : MeasurementUnit {
         override val unitFor: UnitFor = UnitFor.WindSpeed.Knots
     }
 
     override val units: List<MeasurementUnit>
         get() = listOf(MetersPerSecond, KilometersPerHour, MilesPerHour, Knots)
-    
+
 }

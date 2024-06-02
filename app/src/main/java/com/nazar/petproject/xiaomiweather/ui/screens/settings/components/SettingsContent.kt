@@ -42,10 +42,14 @@ fun SettingsContent(
                     onIntent(SettingsIntent.ChangeUnit(selectedOption))
                 }
             )
-            SettingsItem(
+            SettingsItemWithDropdown(
                 title = stringResource(id = R.string.wind_speed_units),
-                subtitle = "Kilometers per hour (km/h)",
-                onClick = { /* Handle wind speed units click */ }
+                subtitle = stringResource(id = settingState.currentWindSpeedUnit.subtitle),
+                options = settingState.windSpeedUnits,
+                selectedOption = settingState.currentWindSpeedUnit,
+                onOptionSelected = { selectedOption: MeasurementUnit ->
+                    onIntent(SettingsIntent.ChangeUnit(selectedOption))
+                }
             )
             SettingsItem(
                 title = "Atmospheric pressure units",

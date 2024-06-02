@@ -15,9 +15,7 @@ interface ChangeCurrentUnitUseCase {
         override suspend fun invoke(unit: MeasurementUnit) {
            when (unit.unitFor) {
                 is UnitFor.Temperature -> currentUnitsSettingsRepository.saveCurrentUnitOfTemperature(unit)
-                is UnitFor.WindSpeed -> {
-                    // TODO: Implement changing wind speed unit
-                }
+                is UnitFor.WindSpeed -> currentUnitsSettingsRepository.saveCurrentUnitOfWindSpeed(unit)
             }
         }
     }

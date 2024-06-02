@@ -26,4 +26,15 @@ class CurrentUnitsSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getCurrentUnitForWindSpeed(): Flow<MeasurementUnit> {
+        return currentSettingsPreferencesDataStore
+            .windSpeedUnitFlow
+            .flowOn(dispatcher)
+    }
+
+    override suspend fun saveCurrentUnitOfWindSpeed(measurementUnit: MeasurementUnit) {
+        withContext(dispatcher) {
+            currentSettingsPreferencesDataStore.saveWindSpeed(measurementUnit)
+        }
+    }
 }

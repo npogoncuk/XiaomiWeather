@@ -4,7 +4,9 @@ import com.nazar.petproject.domain.settings.repositories.AvailableUnitsSettingsR
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
 import com.nazar.petproject.domain.settings.usecases.ChangeCurrentUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.CurrentTemperatureUnitUseCase
+import com.nazar.petproject.domain.settings.usecases.CurrentWindSpeedUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.GetTemperatureUnitsUseCase
+import com.nazar.petproject.domain.settings.usecases.GetWindSpeedUnitsUseCase
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
 import com.nazar.petproject.domain.weather.DailyWeatherUseCase
@@ -33,4 +35,12 @@ class UseCasesModule {
     @Provides
     fun provideChangeCurrentUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): ChangeCurrentUnitUseCase
             = ChangeCurrentUnitUseCase.Base(currentUnitsSettingsRepository)
+
+    @Provides
+    fun provideGetWindSpeedUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetWindSpeedUnitsUseCase
+            = GetWindSpeedUnitsUseCase.Base(availableUnitsSettingsRepository)
+
+    @Provides
+    fun provideCurrentWindSpeedUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentWindSpeedUnitUseCase
+            = CurrentWindSpeedUnitUseCase.Base(currentUnitsSettingsRepository)
 }

@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface CurrentUnitsSettingsRepository {
 
     fun getCurrentUnitForTemperature(): Flow<MeasurementUnit>
-
     suspend fun saveCurrentUnitOfTemperature(measurementUnit: MeasurementUnit)
+
+    fun getCurrentUnitForWindSpeed(): Flow<MeasurementUnit>
+    suspend fun saveCurrentUnitOfWindSpeed(measurementUnit: MeasurementUnit)
 }

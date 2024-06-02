@@ -84,7 +84,6 @@ fun SettingsItemWithDropdown(
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
                     .background(Color.White)
-                    //.align(Alignment.BottomEnd)
             ) {
                 options.forEach { option ->
                     val isThisOptionSelected = option isSame selectedOption
