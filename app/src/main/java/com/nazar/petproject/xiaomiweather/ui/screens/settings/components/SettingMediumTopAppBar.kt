@@ -7,8 +7,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,16 +18,16 @@ import com.nazar.petproject.xiaomiweather.R
 @Composable
 fun SettingMediumTopAppBar(
     modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior,
     onBackClick: () -> Unit = {}
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     MediumTopAppBar(
         modifier = modifier,
         title = {
             Text(
                 stringResource(id = R.string.settings),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         },
         navigationIcon = {

@@ -5,38 +5,51 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nazar.petproject.xiaomiweather.ui.screens.settings.components.HorizontalLineSpacer
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.components.SettingMediumTopAppBar
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.components.SettingsItem
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.components.SettingsSwitchItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
         topBar = {
             SettingMediumTopAppBar(
                 modifier = Modifier,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            SettingsContent()
-        }
+
+        SettingsContent(modifier = Modifier.padding(paddingValues))
+
     }
 }
 
 @Composable
 fun SettingsContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         Spacer(modifier = Modifier.height(16.dp))
         SettingsSection(title = "UNITS") {
             SettingsItem(
@@ -55,7 +68,7 @@ fun SettingsContent(modifier: Modifier = Modifier) {
                 onClick = { /* Handle pressure units click */ },
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalLineSpacer(modifier = Modifier.padding(vertical = 32.dp))
         SettingsSection(title = "OTHER SETTINGS") {
             SettingsSwitchItem(
                 title = "Update at night automatically",
@@ -70,7 +83,7 @@ fun SettingsContent(modifier: Modifier = Modifier) {
                 onCheckedChange = { /* Handle switch change */ }
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalLineSpacer(modifier = Modifier.padding(vertical = 32.dp))
         SettingsSection(title = "ABOUT WEATHER") {
             SettingsItem(
                 title = "Feedback",
@@ -94,4 +107,10 @@ fun SettingsSection(title: String, content: @Composable () -> Unit) {
         )
         content()
     }
+}
+
+@Preview
+@Composable
+fun SettingsContentPreview() {
+    SettingsContent()
 }
