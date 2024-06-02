@@ -36,7 +36,8 @@ fun SettingsScreen(navController: NavController) {
     ) { paddingValues ->
         SettingsContent(
             modifier = Modifier.padding(paddingValues),
-            settingState = settingsState
+            settingState = settingsState,
+            onIntent = { intent -> settingsViewModel.processIntent(intent) }
         )
     }
 }

@@ -5,11 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.UnitFor
+import com.nazar.petproject.domain.settings.usecases.ChangeCurrentUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.CurrentTemperatureUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.GetTemperatureUnitsUseCase
-import com.nazar.petproject.domain.suspendOnError
-import com.nazar.petproject.domain.suspendOnSuccess
-import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +18,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val getTemperatureUnitsUseCase: GetTemperatureUnitsUseCase,
     private val currentTemperatureUnitUseCase: CurrentTemperatureUnitUseCase,
+    private val changeCurrentUnitUseCase: ChangeCurrentUnitUseCase
 ) : ViewModel() {
 
     private val _settingsState = MutableStateFlow(SettingsScreenState())
@@ -42,11 +41,22 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun processIntent(intent: SettingsIntent) {
+        when (intent) {
+            is SettingsIntent.ChangeUnit -> changeUnit(intent.newUnit)
+        }
+    }
+
+    private fun changeUnit(newUnit: MeasurementUnit) {
+        viewModelScope.launch {
+            changeCurrentUnitUseCase(newUnit)
+        }
+    }
 }
 
 sealed interface SettingsIntent {
-    data class ChangeTemperatureUnit(val unit: MeasurementUnit) : SettingsIntent
-    data class ChangeWindSpeedUnit(val unit: MeasurementUnit) : SettingsIntent
+    data class ChangeUnit(val newUnit: MeasurementUnit) : SettingsIntent
 
 
 }

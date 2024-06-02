@@ -6,6 +6,7 @@ import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRep
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CurrentUnitsSettingsRepositoryImpl @Inject constructor(
@@ -20,7 +21,9 @@ class CurrentUnitsSettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveCurrentUnitOfTemperature(measurementUnit: MeasurementUnit) {
-        TODO("Not yet implemented")
+        withContext(dispatcher) {
+            currentSettingsPreferencesDataStore.saveTemperature(measurementUnit)
+        }
     }
 
 }
