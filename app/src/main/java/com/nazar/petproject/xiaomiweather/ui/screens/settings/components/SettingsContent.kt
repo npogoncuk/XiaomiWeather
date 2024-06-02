@@ -10,26 +10,40 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nazar.petproject.xiaomiweather.R
+import com.nazar.petproject.xiaomiweather.ui.screens.settings.SettingsScreenState
+import com.nazar.petproject.xiaomiweather.ui.screens.settings.subtitle
 
 @Composable
-fun SettingsContent(modifier: Modifier = Modifier) {
+fun SettingsContent(
+    modifier: Modifier = Modifier,
+    settingState: SettingsScreenState
+) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         SettingsSection(title = "UNITS") {
+            SettingsItemWithDropdown(
+                title = stringResource(id = R.string.temprerature_units),
+                subtitle = stringResource(id = settingState.currentTemperatureUnit.subtitle),
+                options = settingState.temperatureUnits,
+                selectedOption = settingState.currentTemperatureUnit,
+                onOptionSelected = {}
+            )
             SettingsItem(
-                title = "Temperature units",
+                title = stringResource(id = R.string.temprerature_units),
                 subtitle = "°C",
                 onClick = { /* Handle temperature units click */ }
             )
             SettingsItem(
-                title = "Wind speed units",
+                title = stringResource(id = R.string.wind_speed_units),
                 subtitle = "Kilometers per hour (km/h)",
                 onClick = { /* Handle wind speed units click */ }
             )
@@ -83,6 +97,9 @@ fun SettingsSection(title: String, content: @Composable () -> Unit) {
 
 @Preview
 @Composable
-fun SettingsContentPreview() {
-    SettingsContent()
+private fun SettingsContentPreview() {
+    val settingState = SettingsScreenState()
+    SettingsContent(
+        settingState = settingState
+    )
 }
