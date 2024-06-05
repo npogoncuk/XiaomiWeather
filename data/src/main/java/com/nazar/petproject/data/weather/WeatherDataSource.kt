@@ -13,5 +13,8 @@ interface WeatherDataSource {
         windSpeedUnit: MeasurementUnit,
     ): IResult<ICurrentWeather>
 
-    suspend fun getDailyWeather(): IResult<IDailyWeather>
+    suspend fun getDailyWeather(
+        temperatureUnit: MeasurementUnit,
+        windSpeedUnit: MeasurementUnit,
+    ): IResult<IDailyWeather>
 }

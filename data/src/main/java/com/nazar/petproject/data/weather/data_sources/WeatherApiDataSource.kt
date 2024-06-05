@@ -47,11 +47,15 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
         return response.handleSuccessErrorException()
     }
 
-    override suspend fun getDailyWeather(): IResult<IDailyWeather> {
+    override suspend fun getDailyWeather(
+        temperatureUnit: MeasurementUnit,
+        windSpeedUnit: MeasurementUnit,
+    ): IResult<IDailyWeather> {
         val response = httpClient.getApiResponse<DailyWeather> {
             addLatitudeLongitude()
             addComaSeparatedWeatherParameters("daily", DAILY_WEATHER_PARAMETERS)
             addKievTimeZone()
+            addTemperatureAndWindSpeedUnits(temperatureUnit, windSpeedUnit)
         }
         return response.handleSuccessErrorException()
     }
@@ -80,10 +84,10 @@ private fun HttpRequestBuilder.addTemperatureAndWindSpeedUnits(temperatureUnit: 
     }
 
     val windSpeedUnitKey = "wind_speed_unit"
-    when(windSpeedUnit) {
-        WindUnits.MilesPerHour -> parameter(windSpeedUnitKey, "mph")
-        WindUnits.MetersPerSecond -> parameter(windSpeedUnitKey, "ms")
-        WindUnits.Knots -> parameter(windSpeedUnitKey, "kn")
+    when {
+        windSpeedUnit isSame WindUnits.MilesPerHour -> parameter(windSpeedUnitKey, "mph")
+        windSpeedUnit isSame WindUnits.MetersPerSecond -> parameter(windSpeedUnitKey, "ms")
+        windSpeedUnit isSame WindUnits.Knots -> parameter(windSpeedUnitKey, "kn")
     }
 }
 

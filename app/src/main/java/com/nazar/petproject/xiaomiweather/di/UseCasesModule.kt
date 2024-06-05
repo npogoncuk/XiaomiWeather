@@ -27,7 +27,10 @@ class UseCasesModule {
     = CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
 
     @Provides
-    fun provideDailyUseCases(weatherRepository: WeatherRepository): DailyWeatherUseCase = DailyWeatherUseCase.Base(weatherRepository)
+    fun provideDailyUseCases(
+        weatherRepository: WeatherRepository,
+        currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
+    ): DailyWeatherUseCase = DailyWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
 
     @Provides
     fun provideGetTemperatureUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetTemperatureUnitsUseCase

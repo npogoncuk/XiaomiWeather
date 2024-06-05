@@ -14,5 +14,8 @@ interface WeatherRepository {
         windSpeedUnit: MeasurementUnit,
     ): Flow<IResult<ICurrentWeather>>
 
-    suspend fun getDailyWeather(): Flow<IResult<IDailyWeather>>
+    suspend fun getDailyWeather(
+        temperatureUnit: MeasurementUnit,
+        windSpeedUnit: MeasurementUnit,
+    ): Flow<IResult<IDailyWeather>>
 }
