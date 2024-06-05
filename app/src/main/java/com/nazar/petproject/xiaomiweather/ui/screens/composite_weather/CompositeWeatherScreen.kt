@@ -73,7 +73,7 @@ fun CompositeWeatherScreen(
                 .fillMaxWidth()
                 .padding(paddingValues)
         ) {
-            val temperatureUnit = currentWeather.propertyToUnitMap["temperature"] ?: "°C"
+            val temperatureUnit = currentWeather.propertyToUnitMap["temperature2m"] ?: ""
             val dailyWeatherToday = dailyWeather.values.oneDayWeatherList.first()
 
 

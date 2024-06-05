@@ -20,7 +20,12 @@ import dagger.hilt.components.SingletonComponent
 class UseCasesModule {
 
     @Provides
-    fun provideCurrentWeatherUseCases(weatherRepository: WeatherRepository): CurrentWeatherUseCase = CurrentWeatherUseCase.Base(weatherRepository)
+    fun provideCurrentWeatherUseCases(
+        weatherRepository: WeatherRepository,
+        currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
+        ): CurrentWeatherUseCase
+    = CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
+
     @Provides
     fun provideDailyUseCases(weatherRepository: WeatherRepository): DailyWeatherUseCase = DailyWeatherUseCase.Base(weatherRepository)
 
