@@ -1,5 +1,7 @@
 package com.nazar.petproject.xiaomiweather.di
 
+import com.nazar.petproject.domain.location.LocationRepository
+import com.nazar.petproject.domain.location.use_cases.GetCurrentLocationUseCase
 import com.nazar.petproject.domain.settings.repositories.AvailableUnitsSettingsRepository
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
 import com.nazar.petproject.domain.settings.usecases.ChangeCurrentUnitUseCase
@@ -60,4 +62,9 @@ class UseCasesModule {
     @Singleton
     fun provideCurrentWindSpeedUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentWindSpeedUnitUseCase =
         CurrentWindSpeedUnitUseCase.Base(currentUnitsSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideCurrentLocationUseCase(locationRepository: LocationRepository): GetCurrentLocationUseCase =
+        GetCurrentLocationUseCase.Base(locationRepository)
 }

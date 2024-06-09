@@ -3,10 +3,6 @@ package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nazar.petproject.domain.IResult
-import com.nazar.petproject.domain.onError
-import com.nazar.petproject.domain.onSuccess
 import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
 import com.nazar.petproject.domain.weather.CurrentWeatherUseCase

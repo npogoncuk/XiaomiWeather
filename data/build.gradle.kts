@@ -54,6 +54,8 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
     ksp(libs.hilt.compiler)
     // reflection
     implementation(kotlin("reflect"))
