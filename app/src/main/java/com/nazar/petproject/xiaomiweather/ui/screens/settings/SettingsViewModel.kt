@@ -11,6 +11,7 @@ import com.nazar.petproject.domain.settings.usecases.CurrentWindSpeedUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.GetTemperatureUnitsUseCase
 import com.nazar.petproject.domain.settings.usecases.GetWindSpeedUnitsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -69,7 +70,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun changeUnit(newUnit: MeasurementUnit) {
-        viewModelScope.launch {
+        viewModelScope.launch(NonCancellable) {
             changeCurrentUnitUseCase(newUnit)
         }
     }

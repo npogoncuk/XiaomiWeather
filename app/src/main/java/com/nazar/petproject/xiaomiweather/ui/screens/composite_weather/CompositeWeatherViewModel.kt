@@ -1,5 +1,6 @@
 package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,6 +48,7 @@ class CompositeWeatherViewModel @Inject constructor(
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
                 }
+                Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
             }
         }
     }
@@ -59,6 +61,7 @@ class CompositeWeatherViewModel @Inject constructor(
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
                 }
+                Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
             }
         }
     }

@@ -6,6 +6,7 @@ import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flattenMerge
 
 interface CurrentWeatherUseCase {
@@ -17,20 +18,14 @@ interface CurrentWeatherUseCase {
         private val currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
     ) : CurrentWeatherUseCase {
 
-        init {
-            println("CurrentWeatherUseCase.Base init block")
-        }
-
         @OptIn(ExperimentalCoroutinesApi::class)
         override suspend operator fun invoke(): Flow<IResult<ICurrentWeather>> {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
 
-            val currentWeatherResultFlow = combine(temperatureUnitFlow, windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
+            return temperatureUnitFlow.combine(windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
                 weatherRepository.getCurrentWeather(temperatureUnit, windSpeedUnit)
-            }.flattenMerge()
-
-            return currentWeatherResultFlow
+            }.flatMapLatest { it }
         }
 
     }

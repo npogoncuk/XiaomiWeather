@@ -7,6 +7,7 @@ import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flattenMerge
 
 interface DailyWeatherUseCase {
@@ -23,11 +24,9 @@ interface DailyWeatherUseCase {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
 
-            val currentWeatherResultFlow = combine(temperatureUnitFlow, windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
+            return temperatureUnitFlow.combine(windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
                 weatherRepository.getDailyWeather(temperatureUnit, windSpeedUnit)
-            }.flattenMerge()
-
-            return currentWeatherResultFlow
+            }.flatMapLatest { it }
         }
 
     }

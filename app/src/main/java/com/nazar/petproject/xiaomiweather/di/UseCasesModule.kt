@@ -14,41 +14,50 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCasesModule {
 
     @Provides
+    @Singleton
     fun provideCurrentWeatherUseCases(
         weatherRepository: WeatherRepository,
         currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
-        ): CurrentWeatherUseCase
-    = CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
+    ): CurrentWeatherUseCase =
+        CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
 
+    @Singleton
     @Provides
     fun provideDailyUseCases(
         weatherRepository: WeatherRepository,
         currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
-    ): DailyWeatherUseCase = DailyWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
+    ): DailyWeatherUseCase =
+        DailyWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
 
     @Provides
-    fun provideGetTemperatureUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetTemperatureUnitsUseCase
-            = GetTemperatureUnitsUseCase.Base(availableUnitsSettingsRepository)
+    @Singleton
+    fun provideGetTemperatureUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetTemperatureUnitsUseCase =
+        GetTemperatureUnitsUseCase.Base(availableUnitsSettingsRepository)
 
     @Provides
-    fun provideCurrentTemperatureUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentTemperatureUnitUseCase
-            = CurrentTemperatureUnitUseCase.Base(currentUnitsSettingsRepository)
+    @Singleton
+    fun provideCurrentTemperatureUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentTemperatureUnitUseCase =
+        CurrentTemperatureUnitUseCase.Base(currentUnitsSettingsRepository)
 
     @Provides
-    fun provideChangeCurrentUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): ChangeCurrentUnitUseCase
-            = ChangeCurrentUnitUseCase.Base(currentUnitsSettingsRepository)
+    @Singleton
+    fun provideChangeCurrentUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): ChangeCurrentUnitUseCase =
+        ChangeCurrentUnitUseCase.Base(currentUnitsSettingsRepository)
 
     @Provides
-    fun provideGetWindSpeedUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetWindSpeedUnitsUseCase
-            = GetWindSpeedUnitsUseCase.Base(availableUnitsSettingsRepository)
+    @Singleton
+    fun provideGetWindSpeedUnitsUseCase(availableUnitsSettingsRepository: AvailableUnitsSettingsRepository): GetWindSpeedUnitsUseCase =
+        GetWindSpeedUnitsUseCase.Base(availableUnitsSettingsRepository)
 
     @Provides
-    fun provideCurrentWindSpeedUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentWindSpeedUnitUseCase
-            = CurrentWindSpeedUnitUseCase.Base(currentUnitsSettingsRepository)
+    @Singleton
+    fun provideCurrentWindSpeedUnitUseCase(currentUnitsSettingsRepository: CurrentUnitsSettingsRepository): CurrentWindSpeedUnitUseCase =
+        CurrentWindSpeedUnitUseCase.Base(currentUnitsSettingsRepository)
 }
