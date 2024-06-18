@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flattenMerge
 
 interface CurrentWeatherUseCase {
 
-    suspend operator fun invoke(): Flow<IResult<ICurrentWeather>>
+    operator fun invoke(): Flow<IResult<ICurrentWeather>>
 
     class Base (
         private val weatherRepository: WeatherRepository,
@@ -19,7 +19,7 @@ interface CurrentWeatherUseCase {
     ) : CurrentWeatherUseCase {
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        override suspend operator fun invoke(): Flow<IResult<ICurrentWeather>> {
+        override operator fun invoke(): Flow<IResult<ICurrentWeather>> {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
 
