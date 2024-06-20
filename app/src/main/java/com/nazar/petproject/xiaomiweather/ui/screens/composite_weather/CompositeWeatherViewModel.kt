@@ -32,7 +32,7 @@ class CompositeWeatherViewModel @Inject constructor(
     val weatherState: StateFlow<CompositeWeatherState> = _weatherState.asStateFlow()
 
     init {
-        getCurrentWeather()
+        //getCurrentWeather()
         getDailyWeather()
     }
 

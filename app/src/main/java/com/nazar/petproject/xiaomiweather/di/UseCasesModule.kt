@@ -27,8 +27,9 @@ class UseCasesModule {
     fun provideCurrentWeatherUseCases(
         weatherRepository: WeatherRepository,
         currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
+        locationRepository: LocationRepository,
     ): CurrentWeatherUseCase =
-        CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository)
+        CurrentWeatherUseCase.Base(weatherRepository, currentUnitsSettingsRepository, locationRepository)
 
     @Singleton
     @Provides
