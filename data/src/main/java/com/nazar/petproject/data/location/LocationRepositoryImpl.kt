@@ -1,6 +1,7 @@
 package com.nazar.petproject.data.location
 
 import com.nazar.petproject.data.location.data_sources.FusedLocationDataSource
+import com.nazar.petproject.data.location.data_sources.LocationPermissionNotGrantedException
 import com.nazar.petproject.domain.DomainException
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.LocationRepository
@@ -16,11 +17,16 @@ class LocationRepositoryImpl @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
 ) : LocationRepository {
 
-    override fun getCurrentLocation(): Flow<IResult<ILocation>> = flow {
+    override fun getCurrentLocation(): Flow<IResult<ILocation, LocationRepository.Exceptions>> = flow {
         try {
             emit(IResult.Success(fusedLocationDataSource.getCurrentLocation()))
         } catch (e: Exception) {
-            emit(IResult.Error(object : DomainException(e.message ?: "Unknown error") {}))
+            emit(IResult.Error(
+                when (e) {
+                    is LocationPermissionNotGrantedException -> LocationRepository.Exceptions.PermissionRequiredException(e)
+                    else -> LocationRepository.Exceptions.UnknownException(e)
+                })
+            )
         }
     }.flowOn(dispatcher)
 }

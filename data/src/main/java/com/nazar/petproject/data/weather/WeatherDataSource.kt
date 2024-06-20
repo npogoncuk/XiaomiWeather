@@ -2,6 +2,7 @@ package com.nazar.petproject.data.weather
 
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
+import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 
@@ -11,10 +12,10 @@ interface WeatherDataSource {
     suspend fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): IResult<ICurrentWeather>
+    ): IResult<ICurrentWeather, WeatherRepository.Exceptions>
 
     suspend fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): IResult<IDailyWeather>
+    ): IResult<IDailyWeather, WeatherRepository.Exceptions>
 }

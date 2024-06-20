@@ -1,33 +1,37 @@
-package com.nazar.petproject.domain.weather
+package com.nazar.petproject.domain.weather.use_cases
 
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
+import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
-import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.map
 
-interface DailyWeatherUseCase {
+interface CurrentWeatherUseCase {
 
-    operator fun invoke(): Flow<IResult<IDailyWeather>>
+    operator fun invoke(): Flow<IResult<ICurrentWeather, WeatherUseCasesError>>
 
-    class Base(
+    class Base (
         private val weatherRepository: WeatherRepository,
         private val currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
-    ) : DailyWeatherUseCase {
+    ) : CurrentWeatherUseCase {
 
         @OptIn(ExperimentalCoroutinesApi::class)
-        override operator fun invoke(): Flow<IResult<IDailyWeather>> {
+        override operator fun invoke(): Flow<IResult<ICurrentWeather, WeatherUseCasesError>> {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
 
             return temperatureUnitFlow.combine(windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
-                weatherRepository.getDailyWeather(temperatureUnit, windSpeedUnit)
-            }.flatMapLatest { it }
+                weatherRepository.getCurrentWeather(temperatureUnit, windSpeedUnit)
+            }.flatMapLatest { it }.map {
+                when (it) {
+                    is IResult.Success -> IResult.Success(it.data)
+                    is IResult.Error -> IResult.Error(WeatherUseCasesError.WeatherRepositoryError(it.exception))
+                }
+            }
         }
-
     }
 }

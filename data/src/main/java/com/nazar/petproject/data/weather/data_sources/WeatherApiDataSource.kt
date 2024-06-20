@@ -11,9 +11,11 @@ import com.nazar.petproject.domain.exceptions.DeveloperMistakeException
 import com.nazar.petproject.domain.exceptions.NoInternetException
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.isSame
+import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.message
 import com.skydoves.sandwich.messageOrNull
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
@@ -37,7 +39,7 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     override suspend fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): IResult<CurrentWeather> {
+    ): IResult<CurrentWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<CurrentWeather> {
             addLatitudeLongitude()
             addComaSeparatedWeatherParameters("current", CURRENT_WEATHER_PARAMETERS)
@@ -50,7 +52,7 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     override suspend fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): IResult<IDailyWeather> {
+    ): IResult<IDailyWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<DailyWeather> {
             addLatitudeLongitude()
             addComaSeparatedWeatherParameters("daily", DAILY_WEATHER_PARAMETERS)
@@ -91,22 +93,14 @@ private fun HttpRequestBuilder.addTemperatureAndWindSpeedUnits(temperatureUnit: 
     }
 }
 
-private fun<T> ApiResponse<T>.handleSuccessErrorException(): IResult<T> {
-    var result: IResult<T>? = null
+private fun<T> ApiResponse<T>.handleSuccessErrorException(): IResult<T, WeatherRepository.Exceptions> {
+    var result: IResult<T, WeatherRepository.Exceptions>? = null
     this.onSuccess {
         result = IResult.Success(data)
     }.onError {
-        result = IResult.Error(exception = DeveloperMistakeException(), message = this.messageOrNull)
+        result = IResult.Error(WeatherRepository.Exceptions.ApiCallError(payload = message()))
     }.onException {
-        result = IResult.Error(exception = throwable.requestThrowableToDomainException())
+        result = IResult.Error(WeatherRepository.Exceptions.NetworkException(exception = throwable))
     }
     return result!!
-}
-
-private fun Throwable.requestThrowableToDomainException() = when(this) {
-    is ClientRequestException, is ServerResponseException, is SerializationException -> {
-        DeveloperMistakeException()
-    }
-    is IOException -> NoInternetException()
-    else -> ApiCallException(this.message ?: "Unknown error")
 }

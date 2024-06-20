@@ -11,8 +11,6 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.nazar.petproject.domain.location.entities.ILocation
-import com.nazar.petproject.domain.location.exceptions.AddressNullException
-import com.nazar.petproject.domain.location.exceptions.LocationPermissionNotGrantedException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
@@ -101,3 +99,6 @@ class FusedLocationDataSource @Inject constructor(
             return accessFineLocationGranted && accessCoarseLocationGranted
         }
 }
+
+class LocationPermissionNotGrantedException : Exception()
+class AddressNullException : Exception()

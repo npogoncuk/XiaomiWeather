@@ -21,17 +21,16 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): Flow<IResult<ICurrentWeather>> = flow {
+    ): Flow<IResult<ICurrentWeather, WeatherRepository.Exceptions>> = flow {
         delay(test_delay)
         val currentWeatherResult = dataSource.getCurrentWeather(temperatureUnit, windSpeedUnit)
         emit(currentWeatherResult)
-        emit(IResult.Error(message = "getCurrentWeatherFlow called"))
     }.flowOn(dispatcher)
 
     override suspend fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
-    ): Flow<IResult<IDailyWeather>> = flow {
+    ): Flow<IResult<IDailyWeather, WeatherRepository.Exceptions>> = flow {
         delay(test_delay)
         val dailyWeather = dataSource.getDailyWeather(temperatureUnit, windSpeedUnit)
         emit(dailyWeather)

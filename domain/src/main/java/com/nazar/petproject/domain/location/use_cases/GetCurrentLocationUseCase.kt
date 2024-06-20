@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetCurrentLocationUseCase {
 
-    operator fun invoke(): Flow<IResult<ILocation>>
+    operator fun invoke(): Flow<IResult<ILocation, LocationRepository.Exceptions>>
 
     class Base(
         private val locationRepository: LocationRepository
     ) : GetCurrentLocationUseCase {
 
-        override fun invoke(): Flow<IResult<ILocation>> = locationRepository.getCurrentLocation()
+        override fun invoke(): Flow<IResult<ILocation, LocationRepository.Exceptions>> = locationRepository.getCurrentLocation()
     }
 
 }

@@ -10,8 +10,8 @@ import com.nazar.petproject.domain.settings.usecases.CurrentWindSpeedUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.GetTemperatureUnitsUseCase
 import com.nazar.petproject.domain.settings.usecases.GetWindSpeedUnitsUseCase
 import com.nazar.petproject.domain.weather.WeatherRepository
-import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
-import com.nazar.petproject.domain.weather.DailyWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

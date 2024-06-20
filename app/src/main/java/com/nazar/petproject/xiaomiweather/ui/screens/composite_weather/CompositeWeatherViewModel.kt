@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
-import com.nazar.petproject.domain.weather.CurrentWeatherUseCase
-import com.nazar.petproject.domain.weather.DailyWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
