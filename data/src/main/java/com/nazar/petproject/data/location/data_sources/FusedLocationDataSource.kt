@@ -36,7 +36,11 @@ class FusedLocationDataSource @Inject constructor(
         }
 
         val location = try {
-            fusedLocationClient.lastLocation.await()
+            fusedLocationClient.lastLocation.await().also {
+                if (it == null) {
+                    throw SecurityException()
+                }
+            }
         } catch (e: SecurityException) {
             throw LocationPermissionNotGrantedException()
         }

@@ -26,6 +26,7 @@ import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeat
 import com.nazar.petproject.xiaomiweather.ui.Destination
 import com.nazar.petproject.xiaomiweather.ui.Dimensions
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
+import com.nazar.petproject.xiaomiweather.ui.permissions.RequestLocationPermission
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CurrentTemperatureBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.FiveDayForecastBlock
@@ -48,6 +49,13 @@ fun CompositeWeatherScreen(
     }
 
     val state by viewModel.weatherState.collectAsState()
+
+    if (state.shouldRequestLocationPermission) {
+        RequestLocationPermission(onPermissionGranted = { /*TODO*/ }) {
+
+        }
+        return
+    }
     Scaffold(
         topBar = {
             CompositeWeatherTopAppBar(
@@ -91,7 +99,8 @@ fun CompositeWeatherScreen(
             )
 
             Row(
-                modifier = Modifier.background(color = Color(0xFF86CDF0))
+                modifier = Modifier
+                    .background(color = Color(0xFF86CDF0))
                     .height(200.dp)
             ) {
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
@@ -130,7 +139,9 @@ fun CompositeWeatherScreen(
 
 
             SunriseSunsetInfoBlock(
-                Modifier.fillMaxWidth().padding(Dimensions.DEFAULT_SMALL_PADDING)
+                Modifier
+                    .fillMaxWidth()
+                    .padding(Dimensions.DEFAULT_SMALL_PADDING)
             )
         }
     }

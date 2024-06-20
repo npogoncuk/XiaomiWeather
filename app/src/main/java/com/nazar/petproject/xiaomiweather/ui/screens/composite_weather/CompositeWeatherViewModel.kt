@@ -9,12 +9,15 @@ import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
 import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
+import com.nazar.petproject.domain.weather.use_cases.WeatherUseCasesError
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +35,7 @@ class CompositeWeatherViewModel @Inject constructor(
     val weatherState: StateFlow<CompositeWeatherState> = _weatherState.asStateFlow()
 
     init {
-        //getCurrentWeather()
+        getCurrentWeather()
         getDailyWeather()
     }
 
@@ -41,6 +44,10 @@ class CompositeWeatherViewModel @Inject constructor(
             currentWeatherUseCase().collect { result ->
                 result.suspendOnError {
                     oneTimeEventChannel.send(OneTimeUIEvent.ShowToast( exception.message ?: "Error"))
+                    if (this.exception is WeatherUseCasesError.LocationRepositoryError) {
+                        Log.d("CompositeWeatherViewModel", "LocationRepositoryError")
+                        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = true)
+                    }
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
                 }
@@ -57,7 +64,7 @@ class CompositeWeatherViewModel @Inject constructor(
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
                 }
-                Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
+                Log.d("CompositeWeatherViewModel", "new DailyWeather: $result")
             }
         }
     }
@@ -65,5 +72,6 @@ class CompositeWeatherViewModel @Inject constructor(
 
 data class CompositeWeatherState(
     val currentWeather: ICurrentWeather? = null,
-    val dailyWeather: IDailyWeather? = null
+    val dailyWeather: IDailyWeather? = null,
+    val shouldRequestLocationPermission: Boolean = false,
 )
