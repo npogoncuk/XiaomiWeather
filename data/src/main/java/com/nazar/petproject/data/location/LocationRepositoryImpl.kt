@@ -2,7 +2,6 @@ package com.nazar.petproject.data.location
 
 import com.nazar.petproject.data.location.data_sources.FusedLocationDataSource
 import com.nazar.petproject.data.location.data_sources.LocationPermissionNotGrantedException
-import com.nazar.petproject.domain.DomainException
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.LocationRepository
 import com.nazar.petproject.domain.location.entities.ILocation

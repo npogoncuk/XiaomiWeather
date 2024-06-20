@@ -6,9 +6,6 @@ import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
 import com.nazar.petproject.data.weather.model.daily_weather.DailyWeather
 import com.nazar.petproject.domain.IResult
-import com.nazar.petproject.domain.exceptions.ApiCallException
-import com.nazar.petproject.domain.exceptions.DeveloperMistakeException
-import com.nazar.petproject.domain.exceptions.NoInternetException
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.isSame
 import com.nazar.petproject.domain.weather.WeatherRepository
@@ -16,19 +13,12 @@ import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.message
-import com.skydoves.sandwich.messageOrNull
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.bodyAsText
-import io.ktor.utils.io.errors.IOException
-import kotlinx.serialization.SerializationException
 import javax.inject.Inject
 
 private const val CURRENT_WEATHER_PARAMETERS = "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"

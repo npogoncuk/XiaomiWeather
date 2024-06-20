@@ -6,26 +6,26 @@ sealed interface IResult<out T, out E> {
     data class Error<out E>(val exception: E) : IResult<Nothing, E>
 }
 
-suspend inline fun<T> IResult<T, Nothing>.suspendOnSuccess(crossinline block: suspend IResult.Success<T>.() -> Unit): IResult<T, Nothing> {
+suspend inline fun<T, E> IResult<T, E>.suspendOnSuccess(crossinline block: suspend IResult.Success<T>.() -> Unit): IResult<T, E> {
     if (this is IResult.Success) {
         block(this)
     }
     return this
 }
 
-inline fun<T> IResult<T, Nothing>.onSuccess(crossinline block: IResult.Success<T>.() -> Unit): IResult<T, Nothing> {
+inline fun<T, E> IResult<T, E>.onSuccess(crossinline block: IResult.Success<T>.() -> Unit): IResult<T, E> {
     if (this is IResult.Success) {
         block(this)
     }
     return this
 }
-suspend inline fun<E> IResult<Nothing, E>.suspendOnError(crossinline block: suspend IResult.Error<E>.() -> Unit): IResult<Nothing, E> {
+suspend inline fun<T, E> IResult<T, E>.suspendOnError(crossinline block: suspend IResult.Error<E>.() -> Unit): IResult<T, E> {
     if (this is IResult.Error) {
         block(this)
     }
     return this
 }
-inline fun<E> IResult<Nothing, E>.onError(crossinline block: IResult.Error<E>.() -> Unit): IResult<Nothing, E> {
+inline fun<T, E> IResult<T, E>.onError(crossinline block: IResult.Error<E>.() -> Unit): IResult<T, E> {
     if (this is IResult.Error) {
         block(this)
     }

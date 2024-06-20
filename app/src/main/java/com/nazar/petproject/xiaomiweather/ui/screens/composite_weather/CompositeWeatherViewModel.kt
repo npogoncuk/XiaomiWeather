@@ -40,7 +40,7 @@ class CompositeWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             currentWeatherUseCase().collect { result ->
                 result.suspendOnError {
-                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast( message ?: "Error"))
+                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast( exception.message ?: "Error"))
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
                 }
@@ -53,7 +53,7 @@ class CompositeWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             dailyWeatherUseCase().collect { result ->
                 result.suspendOnError {
-                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(message ?: "Error"))
+                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(exception.message ?: "Error"))
                 }.suspendOnSuccess {
                     _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
                 }
