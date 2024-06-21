@@ -1,5 +1,6 @@
 package com.nazar.petproject.data.location
 
+import android.util.Log
 import com.nazar.petproject.data.location.data_sources.FusedLocationDataSource
 import com.nazar.petproject.data.location.data_sources.LocationPermissionNotGrantedException
 import com.nazar.petproject.domain.IResult
@@ -18,7 +19,9 @@ class LocationRepositoryImpl @Inject constructor(
 
     override fun getCurrentLocation(): Flow<IResult<ILocation, LocationRepository.Exceptions>> = flow {
         try {
-            emit(IResult.Success(fusedLocationDataSource.getCurrentLocation()))
+            emit(IResult.Success(fusedLocationDataSource.getCurrentLocation()).also {
+                Log.d("LocationRepositoryImpl", "getCurrentLocation: $it")
+            })
         } catch (e: Exception) {
             emit(IResult.Error(
                 when (e) {

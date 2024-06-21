@@ -39,6 +39,12 @@ class CompositeWeatherViewModel @Inject constructor(
         getDailyWeather()
     }
 
+    fun reloadData() {
+        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = false)
+        getCurrentWeather()
+        getDailyWeather()
+    }
+
     private fun getCurrentWeather() {
         viewModelScope.launch {
             currentWeatherUseCase().collect { result ->

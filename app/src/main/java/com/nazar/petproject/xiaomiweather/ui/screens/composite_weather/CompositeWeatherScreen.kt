@@ -51,9 +51,14 @@ fun CompositeWeatherScreen(
     val state by viewModel.weatherState.collectAsState()
 
     if (state.shouldRequestLocationPermission) {
-        RequestLocationPermission(onPermissionGranted = { /*TODO*/ }) {
-
-        }
+        RequestLocationPermission(
+            onPermissionGranted = {
+                viewModel.reloadData()
+            },
+            onPermissionDenied = {
+                //viewModel.onLocationPermissionDenied()
+            }
+        )
         return
     }
     Scaffold(

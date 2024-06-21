@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -35,12 +34,12 @@ fun RequestLocationPermission(
     onPermissionGranted: () -> Unit,
     onPermissionDenied: () -> Unit,
 ) {
-    val context = LocalContext.current as Activity
+    val activity = LocalContext.current as Activity
 
     var locationPermissionsGranted by remember { mutableStateOf(false) }
     var shouldShowPermissionRationale by remember {
         mutableStateOf(
-            context.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
+            activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
         )
     }
 
@@ -48,11 +47,6 @@ fun RequestLocationPermission(
         mutableStateOf(false)
     }
 
-
-    val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
 
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -63,7 +57,9 @@ fun RequestLocationPermission(
 
             if (!locationPermissionsGranted) {
                 shouldShowPermissionRationale =
-                    context.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
+            } else {
+                onPermissionGranted()
             }
             shouldDirectUserToApplicationSettings = !shouldShowPermissionRationale && !locationPermissionsGranted
         })
@@ -109,7 +105,7 @@ fun RequestLocationPermission(
         }
     }
     if (shouldDirectUserToApplicationSettings) {
-        context.openApplicationSettings()
+        activity.openApplicationSettings()
     }
 
 
