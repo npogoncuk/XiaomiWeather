@@ -2,20 +2,24 @@ package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -26,7 +30,8 @@ import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeat
 import com.nazar.petproject.xiaomiweather.ui.Destination
 import com.nazar.petproject.xiaomiweather.ui.Dimensions
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
-import com.nazar.petproject.xiaomiweather.ui.permissions.RequestLocationPermission
+import com.nazar.petproject.xiaomiweather.ui.permissions.LocationPermissionStatus
+import com.nazar.petproject.xiaomiweather.ui.permissions.Sample
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CurrentTemperatureBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.FiveDayForecastBlock
@@ -50,18 +55,12 @@ fun CompositeWeatherScreen(
 
     val state by viewModel.weatherState.collectAsState()
 
-    if (state.shouldRequestLocationPermission) {
-        RequestLocationPermission(
-            onPermissionGranted = {
-                viewModel.reloadData()
-            },
-            onPermissionDenied = {
-                //viewModel.onLocationPermissionDenied()
-            }
-        )
-        return
-    }
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             CompositeWeatherTopAppBar(
                 onPlusClick = {
@@ -72,6 +71,38 @@ fun CompositeWeatherScreen(
             )
         }
     ) { paddingValues ->
+
+        if (state.shouldRequestLocationPermission) {
+            Box(modifier = Modifier.padding(paddingValues)) {
+                Sample(
+                    onLocationPermissionResult = { locationPermissionStatus ->
+                        when (locationPermissionStatus) {
+                            LocationPermissionStatus.GRANTED -> {
+                                viewModel.reloadData()
+                            }
+                            LocationPermissionStatus.SHOW_RATIONALE -> {
+                                /*scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "Please grant us fine location. Thank you :D",
+                                        actionLabel = "Request permissions",
+                                        duration = SnackbarHostState.Duration.Short
+                                    )
+                                }*/
+                            }
+                            LocationPermissionStatus.DENIED -> {
+                                /*scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "This feature requires location permission",
+                                        actionLabel = "Request permissions",
+                                        duration = SnackbarHostState.Duration.Short
+                                    )
+                                }*/
+                            }
+                        }
+                    }
+                )
+            }
+        }
         val scrollState = rememberScrollState()
         val dailyWeather = state.dailyWeather
         val currentWeather = state.currentWeather
