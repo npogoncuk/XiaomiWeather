@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
-import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
-import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
+import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.use_cases.WeatherUseCasesError
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +16,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

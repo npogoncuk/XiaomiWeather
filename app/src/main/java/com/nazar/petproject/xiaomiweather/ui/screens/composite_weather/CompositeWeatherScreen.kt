@@ -83,24 +83,7 @@ fun CompositeWeatherScreen(
                         LocationPermissionStatus.GRANTED -> {
                             viewModel.reloadData()
                         }
-                        LocationPermissionStatus.SHOW_RATIONALE -> {
-                            /*scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = "Please grant us fine location. Thank you :D",
-                                    actionLabel = "Request permissions",
-                                    duration = SnackbarHostState.Duration.Short
-                                )
-                            }*/
-                        }
-                        LocationPermissionStatus.DENIED -> {
-                            /*scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = "This feature requires location permission",
-                                    actionLabel = "Request permissions",
-                                    duration = SnackbarHostState.Duration.Short
-                                )
-                            }*/
-                        }
+                        else -> {}
                     }
                 }
             )
