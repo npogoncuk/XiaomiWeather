@@ -75,7 +75,9 @@ fun CompositeWeatherScreen(
 
         if (state.shouldRequestLocationPermission) {
             RequestLocationPermission(
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
                 onLocationPermissionResult = { locationPermissionStatus ->
                     when (locationPermissionStatus) {
                         LocationPermissionStatus.GRANTED -> {
