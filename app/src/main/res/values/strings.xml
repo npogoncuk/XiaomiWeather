@@ -16,4 +16,9 @@
     <string name="kilometers_per_hour">Kilometers per hour (km/h)</string>
     <string name="miles_per_hour">Miles per hour (mph)</string>
     <string name="knots">Knot</string>
+    <string name="thanks_for_approximate_location"> Yay! Thanks for letting me access your approximate location. But you know what would be great? If you allow me to know where you exactly are. Thank you!</string>
+    <string name="location_denied_please_grant_permissions">Getting your exact location is important for this app. Please grant us fine location. Thank you :D</string>
+    <string name="this_feature_requires_location_permission">This feature requires location permission</string>
+    <string name="allow_precise_location">Allow precise location</string>
+    <string name="allow_permissions">Allow permissions</string>
 </resources>

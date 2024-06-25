@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,7 @@ import com.nazar.petproject.xiaomiweather.ui.Destination
 import com.nazar.petproject.xiaomiweather.ui.Dimensions
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import com.nazar.petproject.xiaomiweather.ui.permissions.LocationPermissionStatus
-import com.nazar.petproject.xiaomiweather.ui.permissions.Sample
+import com.nazar.petproject.xiaomiweather.ui.permissions.RequestLocationPermission
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CompositeWeatherTopAppBar
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.CurrentTemperatureBlock
 import com.nazar.petproject.xiaomiweather.ui.screens.composite_weather.components.FiveDayForecastBlock
@@ -73,35 +74,34 @@ fun CompositeWeatherScreen(
     ) { paddingValues ->
 
         if (state.shouldRequestLocationPermission) {
-            Box(modifier = Modifier.padding(paddingValues)) {
-                Sample(
-                    onLocationPermissionResult = { locationPermissionStatus ->
-                        when (locationPermissionStatus) {
-                            LocationPermissionStatus.GRANTED -> {
-                                viewModel.reloadData()
-                            }
-                            LocationPermissionStatus.SHOW_RATIONALE -> {
-                                /*scope.launch {
-                                    snackbarHostState.showSnackbar(
-                                        message = "Please grant us fine location. Thank you :D",
-                                        actionLabel = "Request permissions",
-                                        duration = SnackbarHostState.Duration.Short
-                                    )
-                                }*/
-                            }
-                            LocationPermissionStatus.DENIED -> {
-                                /*scope.launch {
-                                    snackbarHostState.showSnackbar(
-                                        message = "This feature requires location permission",
-                                        actionLabel = "Request permissions",
-                                        duration = SnackbarHostState.Duration.Short
-                                    )
-                                }*/
-                            }
+            RequestLocationPermission(
+                modifier = Modifier.fillMaxSize().padding(paddingValues),
+                onLocationPermissionResult = { locationPermissionStatus ->
+                    when (locationPermissionStatus) {
+                        LocationPermissionStatus.GRANTED -> {
+                            viewModel.reloadData()
+                        }
+                        LocationPermissionStatus.SHOW_RATIONALE -> {
+                            /*scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = "Please grant us fine location. Thank you :D",
+                                    actionLabel = "Request permissions",
+                                    duration = SnackbarHostState.Duration.Short
+                                )
+                            }*/
+                        }
+                        LocationPermissionStatus.DENIED -> {
+                            /*scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = "This feature requires location permission",
+                                    actionLabel = "Request permissions",
+                                    duration = SnackbarHostState.Duration.Short
+                                )
+                            }*/
                         }
                     }
-                )
-            }
+                }
+            )
         }
         val scrollState = rememberScrollState()
         val dailyWeather = state.dailyWeather
