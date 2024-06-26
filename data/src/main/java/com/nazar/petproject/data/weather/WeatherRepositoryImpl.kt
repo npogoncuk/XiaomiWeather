@@ -19,7 +19,7 @@ class WeatherRepositoryImpl @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : WeatherRepository {
 
-    override suspend fun getCurrentWeather(
+    override fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
         location: ILocation,
@@ -29,7 +29,7 @@ class WeatherRepositoryImpl @Inject constructor(
         emit(currentWeatherResult)
     }.flowOn(dispatcher)
 
-    override suspend fun getDailyWeather(
+    override fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
     ): Flow<IResult<IDailyWeather, WeatherRepository.Exceptions>> = flow {

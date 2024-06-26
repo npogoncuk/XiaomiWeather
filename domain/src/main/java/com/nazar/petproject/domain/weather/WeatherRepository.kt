@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
 
-    suspend fun getCurrentWeather(
+    fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
         location: ILocation,
     ): Flow<IResult<ICurrentWeather, Exceptions>>
 
-    suspend fun getDailyWeather(
+    fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
     ): Flow<IResult<IDailyWeather, Exceptions>>

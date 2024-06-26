@@ -28,32 +28,13 @@ interface CurrentWeatherUseCase {
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
             val currentLocationFlow = locationRepository.getCurrentLocation()
 
-            val a1 = combine(temperatureUnitFlow, windSpeedUnitFlow, currentLocationFlow) { temperatureUnit, windSpeedUnit, currentLocation ->
-                Triple(temperatureUnit, windSpeedUnit, currentLocation).also {
-                    println("combine $it")
-                }
-            }.map { (temperatureUnit, windSpeedUnit, currentLocation) ->
-                when(currentLocation) {
-                    is IResult.Success -> weatherRepository.getCurrentWeather(temperatureUnit, windSpeedUnit, currentLocation.data).also {
-                        println("weatherRepository.getCurrentWeather ${currentLocation.data}")
-                    }
-                    is IResult.Error -> flowOf(currentLocation)
-                }
+            return combineAndMapToWeatherResultFlow(
+                temperatureUnitFlow,
+                windSpeedUnitFlow,
+                currentLocationFlow
+            ) { temperatureUnit, windSpeedUnit, currentLocation ->
+                weatherRepository.getCurrentWeather(temperatureUnit, windSpeedUnit, currentLocation)
             }
-            val a2 = a1.flattenConcat()
-            val a3 = a2.map { result ->
-                when(result) {
-                    is IResult.Success -> result
-                    is IResult.Error -> {
-                        when(result.exception) {
-                            is WeatherRepository.Exceptions -> IResult.Error(WeatherUseCasesError.WeatherRepositoryError(result.exception))
-                            is LocationRepository.Exceptions -> IResult.Error(WeatherUseCasesError.LocationRepositoryError(result.exception))
-                            else -> TODO()
-                        }
-                    }
-                }
-            }
-            return a3
         }
     }
 }
