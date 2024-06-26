@@ -56,12 +56,23 @@ fun CompositeWeatherScreen(
 
     val state by viewModel.weatherState.collectAsState()
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    if (state.shouldRequestLocationPermission) {
+        RequestLocationPermission(
+            modifier = Modifier
+                .fillMaxSize(),
+            onLocationPermissionResult = { locationPermissionStatus ->
+                when (locationPermissionStatus) {
+                    LocationPermissionStatus.GRANTED -> {
+                        viewModel.reloadData()
+                    }
+                    else -> {}
+                }
+            }
+        )
+        return
+    }
+
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
         topBar = {
             CompositeWeatherTopAppBar(
                 onPlusClick = {
@@ -73,21 +84,7 @@ fun CompositeWeatherScreen(
         }
     ) { paddingValues ->
 
-        if (state.shouldRequestLocationPermission) {
-            RequestLocationPermission(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                onLocationPermissionResult = { locationPermissionStatus ->
-                    when (locationPermissionStatus) {
-                        LocationPermissionStatus.GRANTED -> {
-                            viewModel.reloadData()
-                        }
-                        else -> {}
-                    }
-                }
-            )
-        }
+
         val scrollState = rememberScrollState()
         val dailyWeather = state.dailyWeather
         val currentWeather = state.currentWeather
