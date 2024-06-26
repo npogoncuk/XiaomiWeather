@@ -12,6 +12,7 @@ import com.nazar.petproject.domain.settings.usecases.GetWindSpeedUnitsUseCase
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
 import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.GetAllWeatherDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -69,4 +70,14 @@ class UseCasesModule {
     @Singleton
     fun provideCurrentLocationUseCase(locationRepository: LocationRepository): GetCurrentLocationUseCase =
         GetCurrentLocationUseCase.Base(locationRepository)
+
+    @Provides
+    @Singleton
+    fun provideAllWeatherUseCase(
+        weatherRepository: WeatherRepository,
+        currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
+        locationRepository: LocationRepository,
+    ): GetAllWeatherDataUseCase =
+        GetAllWeatherDataUseCase.Base(weatherRepository, currentUnitsSettingsRepository, locationRepository)
+
 }

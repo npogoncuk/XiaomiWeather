@@ -8,14 +8,12 @@ import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
-import com.nazar.petproject.domain.weather.use_cases.CurrentWeatherUseCase
-import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
+import com.nazar.petproject.domain.weather.use_cases.GetAllWeatherDataUseCase
 import com.nazar.petproject.domain.weather.use_cases.WeatherUseCasesError
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompositeWeatherViewModel @Inject constructor(
-    private val currentWeatherUseCase: CurrentWeatherUseCase,
-    private val dailyWeatherUseCase: DailyWeatherUseCase,
+    private val allWeatherDataUseCase: GetAllWeatherDataUseCase,
 ) : ViewModel() {
 
     private val oneTimeEventChannel = Channel<OneTimeUIEvent>()
@@ -36,26 +33,6 @@ class CompositeWeatherViewModel @Inject constructor(
     val weatherState: StateFlow<CompositeWeatherState> = _weatherState.asStateFlow()
 
     private var collectingJob: Job? = null
-
-    private val currentWeatherCollector: FlowCollector<IResult<ICurrentWeather, WeatherUseCasesError>> =
-        FlowCollector { result ->
-            result.suspendOnError {
-                defaultOnError(this)
-            }.suspendOnSuccess {
-                _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
-            }
-            Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
-        }
-
-    private val dailyWeatherCollector: FlowCollector<IResult<IDailyWeather, WeatherUseCasesError>> =
-        FlowCollector { result ->
-            result.suspendOnError {
-                defaultOnError(this)
-            }.suspendOnSuccess {
-                _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
-            }
-            Log.d("CompositeWeatherViewModel", "new DailyWeather: $result")
-        }
 
     private suspend fun defaultOnError(errorResult: IResult.Error<WeatherUseCasesError>) {
         oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(errorResult.exception.message ?: "Error"))
@@ -69,29 +46,42 @@ class CompositeWeatherViewModel @Inject constructor(
         launchCollectingCurrentAndDailyWeather()
     }
 
-    fun refreshData() {
-        collectingJob?.cancel()
-
-        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = false)
-        launchCollectingCurrentAndDailyWeather()
-    }
-
 
     private fun launchCollectingCurrentAndDailyWeather() {
+        _weatherState.value = _weatherState.value.copy(isRefreshing = true)
+
         collectingJob = viewModelScope.launch {
-            launch {
-                currentWeatherUseCase().collect(currentWeatherCollector)
-            }
-            launch {
-                dailyWeatherUseCase().collect(dailyWeatherCollector)
+            allWeatherDataUseCase().collect { result ->
+
+                _weatherState.value = _weatherState.value.copy(isRefreshing = false)
+
+                result.suspendOnError {
+                    defaultOnError(this)
+                }.suspendOnSuccess {
+                    _weatherState.value = _weatherState.value.copy(
+                        currentWeather = this.data.current,
+                        dailyWeather = this.data.daily,
+                    )
+                }
             }
         }
     }
+
+
 
     fun processIntent(intent: CompositeWeatherIntent) {
         when (intent) {
             is CompositeWeatherIntent.OnRefreshData -> refreshData()
         }
+    }
+
+    private fun refreshData() {
+        collectingJob?.cancel()
+
+        // set to empty state
+        _weatherState.value = CompositeWeatherState()
+
+        launchCollectingCurrentAndDailyWeather()
     }
 }
 
@@ -99,6 +89,7 @@ data class CompositeWeatherState(
     val currentWeather: ICurrentWeather? = null,
     val dailyWeather: IDailyWeather? = null,
     val shouldRequestLocationPermission: Boolean = false,
+    val isRefreshing: Boolean = false,
 )
 
 sealed interface CompositeWeatherIntent {
