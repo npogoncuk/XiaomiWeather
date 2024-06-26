@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
