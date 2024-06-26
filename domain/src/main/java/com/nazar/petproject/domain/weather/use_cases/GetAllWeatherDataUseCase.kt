@@ -49,6 +49,9 @@ interface GetAllWeatherDataUseCase {
 
             val allWeatherFlow = currentWeatherFlow.combine(dailyWeatherFlow) { current, daily ->
                 when {
+                    current is IResult.Loading -> current
+                    daily is IResult.Loading -> daily
+
                     current is IResult.Error -> current
                     daily is IResult.Error -> daily
                     // then we can be sure that both are success

@@ -48,12 +48,12 @@ class CompositeWeatherViewModel @Inject constructor(
 
 
     private fun launchCollectingCurrentAndDailyWeather() {
-        _weatherState.value = _weatherState.value.copy(isRefreshing = true)
+
 
         collectingJob = viewModelScope.launch {
             allWeatherDataUseCase().collect { result ->
 
-                _weatherState.value = _weatherState.value.copy(isRefreshing = false)
+                _weatherState.value = _weatherState.value.copy(isRefreshing = result is IResult.Loading)
 
                 result.suspendOnError {
                     defaultOnError(this)

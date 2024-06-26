@@ -4,6 +4,7 @@ package com.nazar.petproject.domain
 sealed interface IResult<out T, out E> {
     data class Success<out T>(val data: T) : IResult<T, Nothing>
     data class Error<out E>(val exception: E) : IResult<Nothing, E>
+    data object Loading : IResult<Nothing, Nothing>
 }
 
 suspend inline fun<T, E> IResult<T, E>.suspendOnSuccess(crossinline block: suspend IResult.Success<T>.() -> Unit): IResult<T, E> {

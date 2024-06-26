@@ -24,6 +24,7 @@ class WeatherRepositoryImpl @Inject constructor(
         windSpeedUnit: MeasurementUnit,
         location: ILocation,
     ): Flow<IResult<ICurrentWeather, WeatherRepository.Exceptions>> = flow {
+        emit(IResult.Loading)
         delay(test_delay)
         val currentWeatherResult = dataSource.getCurrentWeather(temperatureUnit, windSpeedUnit, location)
         emit(currentWeatherResult)
@@ -34,6 +35,7 @@ class WeatherRepositoryImpl @Inject constructor(
         windSpeedUnit: MeasurementUnit,
         location: ILocation,
     ): Flow<IResult<IDailyWeather, WeatherRepository.Exceptions>> = flow {
+        emit(IResult.Loading)
         delay(test_delay)
         val dailyWeather = dataSource.getDailyWeather(temperatureUnit, windSpeedUnit, location)
         emit(dailyWeather)

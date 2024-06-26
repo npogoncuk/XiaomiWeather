@@ -28,6 +28,8 @@ fun <T> combineAndMapToWeatherResultFlow(
         Triple(temperatureUnit, windSpeedUnit, currentLocation)
     }.map { (temperatureUnit, windSpeedUnit, currentLocation) ->
         when (currentLocation) {
+            is IResult.Loading -> flowOf(currentLocation)
+
             is IResult.Success -> onGetWeather(
                 temperatureUnit,
                 windSpeedUnit,
@@ -39,6 +41,7 @@ fun <T> combineAndMapToWeatherResultFlow(
     }.flattenConcat()
         .map { result ->
             when (result) {
+                is IResult.Loading -> result
                 is IResult.Success -> result
                 is IResult.Error -> {
                     when (result.exception) {

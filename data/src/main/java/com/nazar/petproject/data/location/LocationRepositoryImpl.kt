@@ -18,6 +18,8 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
 
     override fun getCurrentLocation(): Flow<IResult<ILocation, LocationRepository.Exceptions>> = flow {
+        emit(IResult.Loading)
+
         try {
             emit(IResult.Success(fusedLocationDataSource.getCurrentLocation()).also {
                 Log.d("LocationRepositoryImpl", "getCurrentLocation: $it")
