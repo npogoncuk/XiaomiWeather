@@ -1,6 +1,7 @@
 package com.nazar.petproject.domain.weather.use_cases
 
 import com.nazar.petproject.domain.IResult
+import com.nazar.petproject.domain.location.LocationRepository
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
@@ -17,20 +18,24 @@ interface DailyWeatherUseCase {
     class Base(
         private val weatherRepository: WeatherRepository,
         private val currentUnitsSettingsRepository: CurrentUnitsSettingsRepository,
+        private val locationRepository: LocationRepository,
     ) : DailyWeatherUseCase {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         override operator fun invoke(): Flow<IResult<IDailyWeather, WeatherUseCasesError>> {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()
+            val currentLocationFlow = locationRepository.getCurrentLocation()
 
-            return temperatureUnitFlow.combine(windSpeedUnitFlow) { temperatureUnit, windSpeedUnit ->
-                weatherRepository.getDailyWeather(temperatureUnit, windSpeedUnit)
-            }.flatMapLatest { it }.map {
-                when (it) {
-                    is IResult.Success -> IResult.Success(it.data)
-                    is IResult.Error -> IResult.Error(WeatherUseCasesError.WeatherRepositoryError(it.exception))
-                }
+            return combineAndMapToWeatherResultFlow(
+                temperatureUnitFlow,
+                windSpeedUnitFlow,
+                currentLocationFlow
+            ) { temperatureUnit, windSpeedUnit, currentLocation ->
+                weatherRepository.getDailyWeather(
+                    temperatureUnit,
+                    windSpeedUnit,
+                    currentLocation
+                )
             }
         }
     }

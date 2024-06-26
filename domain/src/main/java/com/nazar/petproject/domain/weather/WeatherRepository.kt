@@ -19,6 +19,7 @@ interface WeatherRepository {
     fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
+        location: ILocation,
     ): Flow<IResult<IDailyWeather, Exceptions>>
 
 

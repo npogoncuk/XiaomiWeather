@@ -22,7 +22,6 @@ interface CurrentWeatherUseCase {
         private val locationRepository: LocationRepository,
     ) : CurrentWeatherUseCase {
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         override operator fun invoke(): Flow<IResult<ICurrentWeather, WeatherUseCasesError>> {
             val temperatureUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForTemperature()
             val windSpeedUnitFlow = currentUnitsSettingsRepository.getCurrentUnitForWindSpeed()

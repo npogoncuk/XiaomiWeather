@@ -6,6 +6,7 @@ import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
 import com.nazar.petproject.data.weather.model.daily_weather.DailyWeather
 import com.nazar.petproject.domain.IResult
+import com.nazar.petproject.domain.location.entities.ILocation
 import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.isSame
 import com.nazar.petproject.domain.weather.WeatherRepository
@@ -29,11 +30,12 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     override suspend fun getCurrentWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
+        location: ILocation,
     ): IResult<CurrentWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<CurrentWeather> {
-            addLatitudeLongitude()
+            addLatitudeLongitude(location.latitude, location.longitude)
             addComaSeparatedWeatherParameters("current", CURRENT_WEATHER_PARAMETERS)
-            addKievTimeZone()
+            addTimeZone(location.timeZoneID)
             addTemperatureAndWindSpeedUnits(temperatureUnit, windSpeedUnit)
         }
         return response.handleSuccessErrorException()
@@ -42,24 +44,25 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     override suspend fun getDailyWeather(
         temperatureUnit: MeasurementUnit,
         windSpeedUnit: MeasurementUnit,
+        location: ILocation,
     ): IResult<IDailyWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<DailyWeather> {
-            addLatitudeLongitude()
+            addLatitudeLongitude(location.latitude, location.longitude)
             addComaSeparatedWeatherParameters("daily", DAILY_WEATHER_PARAMETERS)
-            addKievTimeZone()
+            addTimeZone(location.timeZoneID)
             addTemperatureAndWindSpeedUnits(temperatureUnit, windSpeedUnit)
         }
         return response.handleSuccessErrorException()
     }
 }
 
-private fun HttpRequestBuilder.addLatitudeLongitude(latitude: Double = 49.842957, longitude: Double = 24.031111) {
+private fun HttpRequestBuilder.addLatitudeLongitude(latitude: Double, longitude: Double) {
     parameter("latitude", latitude)
     parameter("longitude", longitude)
 }
 
-private fun HttpRequestBuilder.addKievTimeZone() {
-    parameter("timezone", "Europe/Kiev")
+private fun HttpRequestBuilder.addTimeZone(timezone: String) {
+    parameter("timezone", timezone)
 }
 
 private fun HttpRequestBuilder.addComaSeparatedWeatherParameters(key: String, params: String) {
