@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-private const val test_delay = 1L
+private const val test_delay = 3L
 class WeatherRepositoryImpl @Inject constructor(
     private val dataSource: WeatherDataSource,
     private val dispatcher: CoroutineDispatcher
