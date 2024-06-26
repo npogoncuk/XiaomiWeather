@@ -3,6 +3,7 @@ package com.nazar.petproject.xiaomiweather.ui.screens.composite_weather
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.suspendOnError
 import com.nazar.petproject.domain.suspendOnSuccess
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
@@ -12,7 +13,9 @@ import com.nazar.petproject.domain.weather.use_cases.DailyWeatherUseCase
 import com.nazar.petproject.domain.weather.use_cases.WeatherUseCasesError
 import com.nazar.petproject.xiaomiweather.ui.OneTimeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,43 +35,55 @@ class CompositeWeatherViewModel @Inject constructor(
     private val _weatherState = MutableStateFlow(CompositeWeatherState())
     val weatherState: StateFlow<CompositeWeatherState> = _weatherState.asStateFlow()
 
-    init {
-        getCurrentWeather()
-        getDailyWeather()
-    }
+    private var collectingJob: Job? = null
 
-    fun reloadData() {
-        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = false)
-        getCurrentWeather()
-        getDailyWeather()
-    }
-
-    private fun getCurrentWeather() {
-        viewModelScope.launch {
-            currentWeatherUseCase().collect { result ->
-                result.suspendOnError {
-                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast( exception.message ?: "Error"))
-                    if (this.exception is WeatherUseCasesError.LocationRepositoryError) {
-                        Log.d("CompositeWeatherViewModel", "LocationRepositoryError")
-                        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = true)
-                    }
-                }.suspendOnSuccess {
-                    _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
-                }
-                Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
+    private val currentWeatherCollector: FlowCollector<IResult<ICurrentWeather, WeatherUseCasesError>> =
+        FlowCollector { result ->
+            result.suspendOnError {
+                defaultOnError(this)
+            }.suspendOnSuccess {
+                _weatherState.value = _weatherState.value.copy(currentWeather = this.data)
             }
+            Log.d("CompositeWeatherViewModel", "new CurrentWeather: $result")
+        }
+
+    private val dailyWeatherCollector: FlowCollector<IResult<IDailyWeather, WeatherUseCasesError>> =
+        FlowCollector { result ->
+            result.suspendOnError {
+                defaultOnError(this)
+            }.suspendOnSuccess {
+                _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
+            }
+            Log.d("CompositeWeatherViewModel", "new DailyWeather: $result")
+        }
+
+    private suspend fun defaultOnError(errorResult: IResult.Error<WeatherUseCasesError>) {
+        oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(errorResult.exception.message ?: "Error"))
+        if (errorResult.exception is WeatherUseCasesError.LocationRepositoryError) {
+            Log.d("CompositeWeatherViewModel", "LocationRepositoryError")
+            _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = true)
         }
     }
 
-    private fun getDailyWeather() {
-        viewModelScope.launch {
-            dailyWeatherUseCase().collect { result ->
-                result.suspendOnError {
-                    oneTimeEventChannel.send(OneTimeUIEvent.ShowToast(exception.message ?: "Error"))
-                }.suspendOnSuccess {
-                    _weatherState.value = _weatherState.value.copy(dailyWeather = this.data)
-                }
-                Log.d("CompositeWeatherViewModel", "new DailyWeather: $result")
+    init {
+        launchCollectingCurrentAndDailyWeather()
+    }
+
+    fun reloadData() {
+        collectingJob?.cancel()
+
+        _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = false)
+        launchCollectingCurrentAndDailyWeather()
+    }
+
+
+    private fun launchCollectingCurrentAndDailyWeather() {
+        collectingJob = viewModelScope.launch {
+            launch {
+                currentWeatherUseCase().collect(currentWeatherCollector)
+            }
+            launch {
+                dailyWeatherUseCase().collect(dailyWeatherCollector)
             }
         }
     }

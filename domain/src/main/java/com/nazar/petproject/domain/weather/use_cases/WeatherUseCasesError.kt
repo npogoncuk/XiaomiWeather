@@ -11,7 +11,7 @@ interface WeatherUseCasesError {
             get() = exception.message
     }
     data class LocationRepositoryError(val exception: LocationRepository.Exceptions) : WeatherUseCasesError {
-        override val message: String?
-            get() = exception.message
+        override val message: String
+            get() = "Needs location permission to get weather data"
     }
 }
