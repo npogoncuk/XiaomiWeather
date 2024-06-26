@@ -69,7 +69,7 @@ class CompositeWeatherViewModel @Inject constructor(
         launchCollectingCurrentAndDailyWeather()
     }
 
-    fun reloadData() {
+    fun refreshData() {
         collectingJob?.cancel()
 
         _weatherState.value = _weatherState.value.copy(shouldRequestLocationPermission = false)
@@ -87,6 +87,12 @@ class CompositeWeatherViewModel @Inject constructor(
             }
         }
     }
+
+    fun processIntent(intent: CompositeWeatherIntent) {
+        when (intent) {
+            is CompositeWeatherIntent.OnRefreshData -> refreshData()
+        }
+    }
 }
 
 data class CompositeWeatherState(
@@ -94,3 +100,7 @@ data class CompositeWeatherState(
     val dailyWeather: IDailyWeather? = null,
     val shouldRequestLocationPermission: Boolean = false,
 )
+
+sealed interface CompositeWeatherIntent {
+    data object OnRefreshData : CompositeWeatherIntent
+}
