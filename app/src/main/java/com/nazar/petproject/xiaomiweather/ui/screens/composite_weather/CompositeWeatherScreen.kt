@@ -47,7 +47,6 @@ fun CompositeWeatherScreen(
     }
 
     Scaffold(
-        modifier = Modifier.pullRefresh(pullRefreshState),
         topBar = {
             CompositeWeatherTopAppBar(
                 onPlusClick = {
@@ -62,6 +61,7 @@ fun CompositeWeatherScreen(
         Box(
             Modifier
                 .padding(paddingValues)
+                .fillMaxSize()
                 .pullRefresh(pullRefreshState)
         ) {
 
