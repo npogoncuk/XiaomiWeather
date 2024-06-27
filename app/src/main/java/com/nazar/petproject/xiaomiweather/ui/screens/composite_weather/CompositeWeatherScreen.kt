@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -66,28 +67,30 @@ fun CompositeWeatherScreen(
         }
     ) { paddingValues ->
 
-            val dailyWeather = state.dailyWeather
-            val currentWeather = state.currentWeather
+            Box(
+                Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState)
+                    .verticalScroll(scrollState)
+            ) {
+                val dailyWeather = state.dailyWeather
+                val currentWeather = state.currentWeather
 
-            if (dailyWeather != null && currentWeather != null) {
-                ColumnWithAllWeatherBlocks(
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .verticalScroll(scrollState)
-                        .fillMaxWidth(),
-                    currentWeather = currentWeather,
-                    dailyWeather = dailyWeather,
-                )
+                if (dailyWeather != null && currentWeather != null) {
+                    ColumnWithAllWeatherBlocks(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        currentWeather = currentWeather,
+                        dailyWeather = dailyWeather,
+                    )
+                }
+                PullRefreshIndicator(state.isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
             }
 
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .pullRefresh(pullRefreshState)
-                .verticalScroll(scrollState)
-        ) {
-            PullRefreshIndicator(state.isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
-        }
+
+
+
+
     }
 }
