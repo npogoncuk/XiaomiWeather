@@ -1,14 +1,11 @@
 package com.nazar.petproject.data.weather.data_sources
 
-import com.nazar.petproject.data.settings.units_list_storage.TemperatureUnits
-import com.nazar.petproject.data.settings.units_list_storage.WindUnits
 import com.nazar.petproject.data.weather.WeatherDataSource
 import com.nazar.petproject.data.weather.model.current_weather.CurrentWeather
 import com.nazar.petproject.data.weather.model.daily_weather.DailyWeather
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.entities.ILocation
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
-import com.nazar.petproject.domain.settings.entities.units.isSame
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import com.skydoves.sandwich.ApiResponse
@@ -28,8 +25,8 @@ private const val DAILY_WEATHER_PARAMETERS = "weather_code,temperature_2m_max,te
 internal class WeatherApiDataSource @Inject constructor(private val httpClient: HttpClient) : WeatherDataSource {
 
     override suspend fun getCurrentWeather(
-        temperatureUnit: MeasurementUnit,
-        windSpeedUnit: MeasurementUnit,
+        temperatureUnit: UnitFor.Temperature,
+        windSpeedUnit: UnitFor.WindSpeed,
         location: ILocation,
     ): IResult<CurrentWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<CurrentWeather> {
@@ -42,8 +39,8 @@ internal class WeatherApiDataSource @Inject constructor(private val httpClient: 
     }
 
     override suspend fun getDailyWeather(
-        temperatureUnit: MeasurementUnit,
-        windSpeedUnit: MeasurementUnit,
+        temperatureUnit: UnitFor.Temperature,
+        windSpeedUnit: UnitFor.WindSpeed,
         location: ILocation,
     ): IResult<IDailyWeather, WeatherRepository.Exceptions> {
         val response = httpClient.getApiResponse<DailyWeather> {
@@ -72,17 +69,18 @@ private fun HttpRequestBuilder.addComaSeparatedWeatherParameters(key: String, pa
     }
 }
 
-private fun HttpRequestBuilder.addTemperatureAndWindSpeedUnits(temperatureUnit: MeasurementUnit, windSpeedUnit: MeasurementUnit) {
-    // no need to add any parameters if the temperature unit is the same as the default one
-    if (temperatureUnit isSame TemperatureUnits.Fahrenheit) {
-        parameter("temperature_unit", "fahrenheit")
+private fun HttpRequestBuilder.addTemperatureAndWindSpeedUnits(temperatureUnit: UnitFor.Temperature, windSpeedUnit: UnitFor.WindSpeed) {
+    when(temperatureUnit) {
+        UnitFor.Temperature.CELSIUS -> { /* don't need to add parameter because CELSIUS is the default one */}
+        UnitFor.Temperature.FAHRENHEIT -> parameter("temperature_unit", "fahrenheit")
     }
 
     val windSpeedUnitKey = "wind_speed_unit"
-    when {
-        windSpeedUnit isSame WindUnits.MilesPerHour -> parameter(windSpeedUnitKey, "mph")
-        windSpeedUnit isSame WindUnits.MetersPerSecond -> parameter(windSpeedUnitKey, "ms")
-        windSpeedUnit isSame WindUnits.Knots -> parameter(windSpeedUnitKey, "kn")
+    when(windSpeedUnit) {
+        UnitFor.WindSpeed.KILOMETERS_PER_HOUR -> { /* don't need to add parameter */}
+        UnitFor.WindSpeed.MILES_PER_HOUR -> parameter(windSpeedUnitKey, "mph")
+        UnitFor.WindSpeed.METERS_PER_SECOND -> parameter(windSpeedUnitKey, "ms")
+        UnitFor.WindSpeed.KNOTS -> parameter(windSpeedUnitKey, "kn")
     }
 }
 

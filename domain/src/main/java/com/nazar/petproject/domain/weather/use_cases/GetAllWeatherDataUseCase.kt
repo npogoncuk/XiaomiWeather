@@ -2,6 +2,7 @@ package com.nazar.petproject.domain.weather.use_cases
 
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.LocationRepository
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
@@ -27,7 +28,7 @@ interface GetAllWeatherDataUseCase {
                 temperatureUnitFlow,
                 windSpeedUnitFlow,
                 currentLocationFlow
-            ) { temperatureUnit, windSpeedUnit, currentLocation ->
+            ) { temperatureUnit: UnitFor.Temperature, windSpeedUnit: UnitFor.WindSpeed, currentLocation ->
                 weatherRepository.getCurrentWeather(
                     temperatureUnit,
                     windSpeedUnit,
@@ -39,7 +40,7 @@ interface GetAllWeatherDataUseCase {
                 temperatureUnitFlow,
                 windSpeedUnitFlow,
                 currentLocationFlow
-            ) { temperatureUnit, windSpeedUnit, currentLocation ->
+            ) { temperatureUnit: UnitFor.Temperature, windSpeedUnit: UnitFor.WindSpeed, currentLocation ->
                 weatherRepository.getDailyWeather(
                     temperatureUnit,
                     windSpeedUnit,

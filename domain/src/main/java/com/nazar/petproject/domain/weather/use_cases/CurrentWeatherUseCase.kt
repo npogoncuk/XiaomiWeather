@@ -2,15 +2,11 @@ package com.nazar.petproject.domain.weather.use_cases
 
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.LocationRepository
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.settings.repositories.CurrentUnitsSettingsRepository
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flattenConcat
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 
 interface CurrentWeatherUseCase {
 
@@ -31,7 +27,7 @@ interface CurrentWeatherUseCase {
                 temperatureUnitFlow,
                 windSpeedUnitFlow,
                 currentLocationFlow
-            ) { temperatureUnit, windSpeedUnit, currentLocation ->
+            ) { temperatureUnit: UnitFor.Temperature, windSpeedUnit: UnitFor.WindSpeed, currentLocation ->
                 weatherRepository.getCurrentWeather(temperatureUnit, windSpeedUnit, currentLocation)
             }
         }

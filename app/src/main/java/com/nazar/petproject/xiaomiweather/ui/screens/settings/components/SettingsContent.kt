@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.xiaomiweather.R
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.SettingsIntent
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.SettingsScreenState
@@ -38,7 +38,7 @@ fun SettingsContent(
                 subtitle = stringResource(id = settingState.currentTemperatureUnit.subtitle),
                 options = settingState.temperatureUnits,
                 selectedOption = settingState.currentTemperatureUnit,
-                onOptionSelected = { selectedOption: MeasurementUnit ->
+                onOptionSelected = { selectedOption: UnitFor ->
                     onIntent(SettingsIntent.ChangeUnit(selectedOption))
                 }
             )
@@ -47,7 +47,7 @@ fun SettingsContent(
                 subtitle = stringResource(id = settingState.currentWindSpeedUnit.subtitle),
                 options = settingState.windSpeedUnits,
                 selectedOption = settingState.currentWindSpeedUnit,
-                onOptionSelected = { selectedOption: MeasurementUnit ->
+                onOptionSelected = { selectedOption: UnitFor ->
                     onIntent(SettingsIntent.ChangeUnit(selectedOption))
                 }
             )

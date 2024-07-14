@@ -3,7 +3,7 @@ package com.nazar.petproject.domain.weather.use_cases
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.LocationRepository
 import com.nazar.petproject.domain.location.entities.ILocation
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.weather.WeatherRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <T> combineAndMapToWeatherResultFlow(
-    temperatureUnitFlow: Flow<MeasurementUnit>,
-    windSpeedUnitFlow: Flow<MeasurementUnit>,
+    temperatureUnitFlow: Flow<UnitFor.Temperature>,
+    windSpeedUnitFlow: Flow<UnitFor.WindSpeed>,
     locationFlow: Flow<IResult<ILocation, LocationRepository.Exceptions>>,
-    onGetWeather: (MeasurementUnit, MeasurementUnit, ILocation) -> Flow<IResult<T, WeatherRepository.Exceptions>>
+    onGetWeather: (UnitFor.Temperature, UnitFor.WindSpeed, ILocation) -> Flow<IResult<T, WeatherRepository.Exceptions>>
 ) : Flow<IResult<T, WeatherUseCasesError>> {
     return combine(
         temperatureUnitFlow,

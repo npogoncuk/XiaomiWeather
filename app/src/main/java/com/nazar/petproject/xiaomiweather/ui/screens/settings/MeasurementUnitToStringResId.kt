@@ -1,20 +1,19 @@
 package com.nazar.petproject.xiaomiweather.ui.screens.settings
 
 import androidx.annotation.StringRes
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.xiaomiweather.R
 
 @get:StringRes
-val MeasurementUnit.subtitle: Int
-    get() = when (this.unitFor) {
-        is UnitFor.Temperature.Celsius -> R.string.celsius
-        is UnitFor.Temperature.Fahrenheit -> R.string.fahrenheit
+val UnitFor.subtitle: Int
+    get() = when (this) {
+        UnitFor.Temperature.CELSIUS -> R.string.celsius
+        UnitFor.Temperature.FAHRENHEIT -> R.string.fahrenheit
 
-        is UnitFor.WindSpeed.MetersPerSecond -> R.string.meters_per_second
-        is UnitFor.WindSpeed.KilometersPerHour -> R.string.kilometers_per_hour
-        is UnitFor.WindSpeed.MilesPerHour -> R.string.miles_per_hour
-        is UnitFor.WindSpeed.Knots -> R.string.knots
+        UnitFor.WindSpeed.METERS_PER_SECOND -> R.string.meters_per_second
+        UnitFor.WindSpeed.KILOMETERS_PER_HOUR -> R.string.kilometers_per_hour
+        UnitFor.WindSpeed.MILES_PER_HOUR -> R.string.miles_per_hour
+        UnitFor.WindSpeed.KNOTS -> R.string.knots
 
         else -> throw IllegalArgumentException("Unknown unit type")
     }

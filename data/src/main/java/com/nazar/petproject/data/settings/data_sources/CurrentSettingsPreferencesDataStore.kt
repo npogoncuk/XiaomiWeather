@@ -6,9 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.nazar.petproject.data.settings.units_list_storage.TemperatureUnits
-import com.nazar.petproject.data.settings.units_list_storage.WindUnits
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,30 +23,30 @@ class CurrentSettingsPreferencesDataStore @Inject constructor(
 ) {
 
     private val temperatureUnit = stringPreferencesKey("temperature_unit")
-    val temperatureUnitFlow: Flow<MeasurementUnit> = context.dataStore.data
+    val temperatureUnitFlow: Flow<UnitFor.Temperature> = context.dataStore.data
         .map { preferences ->
             val temperatureStr = preferences[temperatureUnit]
-            val unitsList = TemperatureUnits.units
+            val unitsList = UnitFor.Temperature.entries
             val measurementUnit = unitsList.find { it.toString() == temperatureStr } ?: unitsList.first()
             measurementUnit
         }
 
-    suspend fun saveTemperature(unit: MeasurementUnit) {
+    suspend fun saveTemperature(unit: UnitFor.Temperature) {
         context.dataStore.edit { settings ->
             settings[temperatureUnit] = unit.toString()
         }
     }
 
     private val windSpeedUnit = stringPreferencesKey("wind_speed_unit")
-    val windSpeedUnitFlow: Flow<MeasurementUnit> = context.dataStore.data
+    val windSpeedUnitFlow: Flow<UnitFor.WindSpeed> = context.dataStore.data
         .map { preferences ->
             val windSpeedStr = preferences[windSpeedUnit]
-            val unitsList = WindUnits.units
+            val unitsList = UnitFor.WindSpeed.entries
             val measurementUnit = unitsList.find { it.toString() == windSpeedStr } ?: unitsList.first()
             measurementUnit
         }
 
-    suspend fun saveWindSpeed(unit: MeasurementUnit) {
+    suspend fun saveWindSpeed(unit: UnitFor.WindSpeed) {
         context.dataStore.edit { settings ->
             settings[windSpeedUnit] = unit.toString()
         }

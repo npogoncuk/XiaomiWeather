@@ -3,7 +3,6 @@ package com.nazar.petproject.xiaomiweather.ui.screens.settings.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,18 +28,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.UnitFor
-import com.nazar.petproject.domain.settings.entities.units.isSame
 import com.nazar.petproject.xiaomiweather.ui.screens.settings.subtitle
 
 @Composable
 fun SettingsItemWithDropdown(
     title: String,
     subtitle: String,
-    options: List<MeasurementUnit>,
-    selectedOption: MeasurementUnit,
-    onOptionSelected: (MeasurementUnit) -> Unit,
+    options: List<UnitFor>,
+    selectedOption: UnitFor,
+    onOptionSelected: (UnitFor) -> Unit,
     backgroundColor: Color = Color.Transparent,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -86,7 +83,7 @@ fun SettingsItemWithDropdown(
                     .background(Color.White)
             ) {
                 options.forEach { option ->
-                    val isThisOptionSelected = option isSame selectedOption
+                    val isThisOptionSelected = option == selectedOption
                     DropdownMenuItem(
                         onClick = {
                             onOptionSelected(option)
@@ -129,8 +126,8 @@ private fun SettingsItemWithDropdownPreview() {
     SettingsItemWithDropdown(
         title = "Atmospheric pressure units",
         subtitle = "Millimeter of mercury (mmHg)",
-        options = listOf(object : MeasurementUnit { override val unitFor = UnitFor.Temperature.Celsius}, object : MeasurementUnit { override val unitFor = UnitFor.Temperature.Celsius}),
-        selectedOption = object : MeasurementUnit { override val unitFor = UnitFor.Temperature.Celsius},
+        options = UnitFor.Temperature.entries.toList(),
+        selectedOption = UnitFor.Temperature.CELSIUS,
         onOptionSelected = {  },
     )
 }

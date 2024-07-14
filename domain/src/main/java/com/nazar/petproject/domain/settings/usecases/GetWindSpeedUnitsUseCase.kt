@@ -1,19 +1,15 @@
 package com.nazar.petproject.domain.settings.usecases
 
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.UnitFor
-import com.nazar.petproject.domain.settings.repositories.AvailableUnitsSettingsRepository
 
 interface GetWindSpeedUnitsUseCase {
 
-    operator fun invoke(): List<MeasurementUnit>
+    operator fun invoke(): List<UnitFor.WindSpeed>
 
-    class Base(
-        private val availableUnitsSettingsRepository: AvailableUnitsSettingsRepository
-    ) : GetWindSpeedUnitsUseCase {
+    class Base : GetWindSpeedUnitsUseCase {
 
-        override fun invoke(): List<MeasurementUnit> {
-            return availableUnitsSettingsRepository.getAvailableUnits(object : UnitFor.WindSpeed {})
+        override fun invoke(): List<UnitFor.WindSpeed> {
+            return UnitFor.WindSpeed.entries
         }
     }
 }

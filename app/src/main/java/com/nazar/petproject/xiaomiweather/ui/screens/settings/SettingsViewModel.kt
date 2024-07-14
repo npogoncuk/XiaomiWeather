@@ -3,7 +3,6 @@ package com.nazar.petproject.xiaomiweather.ui.screens.settings
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
 import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.settings.usecases.ChangeCurrentUnitUseCase
 import com.nazar.petproject.domain.settings.usecases.CurrentTemperatureUnitUseCase
@@ -69,7 +68,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun changeUnit(newUnit: MeasurementUnit) {
+    private fun changeUnit(newUnit: UnitFor) {
         viewModelScope.launch(NonCancellable) {
             changeCurrentUnitUseCase(newUnit)
         }
@@ -77,13 +76,13 @@ class SettingsViewModel @Inject constructor(
 }
 
 sealed interface SettingsIntent {
-    data class ChangeUnit(val newUnit: MeasurementUnit) : SettingsIntent
+    data class ChangeUnit(val newUnit: UnitFor) : SettingsIntent
 
 
 }
 data class SettingsScreenState(
-    val temperatureUnits: List<MeasurementUnit> = emptyList(),
-    val currentTemperatureUnit: MeasurementUnit = object : MeasurementUnit { override val unitFor = UnitFor.Temperature.Celsius},
-    val windSpeedUnits: List<MeasurementUnit> = emptyList(),
-    val currentWindSpeedUnit: MeasurementUnit = object : MeasurementUnit { override val unitFor = UnitFor.WindSpeed.MetersPerSecond},
+    val temperatureUnits: List<UnitFor> = emptyList(),
+    val currentTemperatureUnit: UnitFor = UnitFor.Temperature.CELSIUS,
+    val windSpeedUnits: List<UnitFor> = emptyList(),
+    val currentWindSpeedUnit: UnitFor = UnitFor.WindSpeed.METERS_PER_SECOND,
 )

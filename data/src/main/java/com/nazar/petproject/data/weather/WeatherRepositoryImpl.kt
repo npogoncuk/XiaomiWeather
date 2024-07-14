@@ -3,7 +3,7 @@ package com.nazar.petproject.data.weather
 import com.nazar.petproject.domain.weather.WeatherRepository
 import com.nazar.petproject.domain.IResult
 import com.nazar.petproject.domain.location.entities.ILocation
-import com.nazar.petproject.domain.settings.entities.units.MeasurementUnit
+import com.nazar.petproject.domain.settings.entities.units.UnitFor
 import com.nazar.petproject.domain.weather.entities.current_weather.ICurrentWeather
 import com.nazar.petproject.domain.weather.entities.daily_weather.IDailyWeather
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,8 +20,8 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override fun getCurrentWeather(
-        temperatureUnit: MeasurementUnit,
-        windSpeedUnit: MeasurementUnit,
+        temperatureUnit: UnitFor.Temperature,
+        windSpeedUnit: UnitFor.WindSpeed,
         location: ILocation,
     ): Flow<IResult<ICurrentWeather, WeatherRepository.Exceptions>> = flow {
         emit(IResult.Loading)
@@ -31,8 +31,8 @@ class WeatherRepositoryImpl @Inject constructor(
     }.flowOn(dispatcher)
 
     override fun getDailyWeather(
-        temperatureUnit: MeasurementUnit,
-        windSpeedUnit: MeasurementUnit,
+        temperatureUnit: UnitFor.Temperature,
+        windSpeedUnit: UnitFor.WindSpeed,
         location: ILocation,
     ): Flow<IResult<IDailyWeather, WeatherRepository.Exceptions>> = flow {
         emit(IResult.Loading)
